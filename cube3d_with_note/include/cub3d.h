@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/08/29 05:59:52 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/08/29 07:06:54 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,29 @@ typedef enum e_parsing_types
 	C,
 }	t_parsing_types;
 
-static char	*param[] = {
+static char	*param[] = { //passe pas a la norme faudrait init a la main
 	"NO", "SO", "WE", "EA", "F", "C", NULL
 };
 
-static char	map_char[] = {
+static char	map_char[] = {//passe pas a la norme faudrait init a la main
 	'0', '1', 'N', 'S', 'E', 'W', '\0'
 };
 
-static char	map_char2[] = {
+static char	map_char2[] = {//passe pas a la norme faudrait init a la main
 	'0', 'N', 'S', 'E', 'W', '\0'
 };
 
-static const char	white_space[] = {
+static const char	white_space[] = {//passe pas a la norme faudrait init a la main
 	' ', '\t', '\v', '\f', '\r', '\n', '\0'
 };
 
-typedef struct s_parsing
+typedef struct s_parsing //jme sers de ca pour parser et je navigue dans ces 2 tab avec le enum plus haut
 {
-	int		bool_parsing[6];
-	char	**str_parsing;
+	int		bool_parsing[6]; //savoir si on a rencontrer chaque element
+	char	**str_parsing; //stocker les texture/couleur trouver apres NO,SO,WE,EA,F,C
 }	t_parsing;
 
-typedef struct s_map
+typedef struct s_map //une fois que tout est clean jmet la map les couleur et les xpm dedans
 {
 	char	**map;
 	int		*floor_color;
@@ -91,14 +91,14 @@ typedef struct s_map
 
 typedef struct s_global
 {
-	char		*path;
-	int			nb_of_line;
-	t_gc		*gc;
-	int			xp_position;
-	int			yp_position;
-	char		**file;
-	t_parsing	parsing;
-	t_map		map;
+	char		*path; //le path du file rentre en parametre
+	int			nb_of_line; //nb de ligne du file
+	char		**file; //le contenu du file
+	t_gc		*gc; // la garbage collector (trouvable dans la libft)
+	int			xp_position; //position x du joueur au depart, a mettre peut etre dans une struct dedie au mouvement/exec
+	int			yp_position; //position x du joueur au depart, a mettre peut etre dans une struct dedie au mouvement/exec
+	t_parsing	parsing; //struct qui sert durant le parsing
+	t_map		map; //struct des donnes parsee de la map
 }	t_global;
 
 /* ******************* PARSING ******************* */
