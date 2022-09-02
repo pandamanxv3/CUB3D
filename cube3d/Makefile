@@ -6,7 +6,7 @@
 #    By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/03 03:43:32 by cbarbit           #+#    #+#              #
-#    Updated: 2022/08/30 04:40:41 by aboudjel         ###   ########.fr        #
+#    Updated: 2022/09/02 08:58:44 by aboudjel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ C_FILES =	sources/cub3d.c sources/parsing/get_param_and_map.c \
 			sources/parsing/parsing_map.c sources/parsing/utils_parsing.c \
 			sources/parsing/are_params_correct.c \
 			sources/parsing/init_struct.c \
-			sources/parsing/get_file.c
+			sources/parsing/get_file.c sources/parsing/expand_map_size.c
 			
 CC = cc
 
@@ -34,8 +34,8 @@ all: ${NAME}
 	@${CC} ${CFLAGS} -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
 ${NAME} : ${O_FILES}
-	@${MAKE} -C libft
-	make -C mlx_linux
+	@make -C libft
+	@make -C mlx_linux
 	@${CC} ${O_FILES} libft/libft.a -g $(MLX_FLAGS) -o ${NAME}
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/08/30 04:38:41 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/02 09:29:18 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define CUB3D_H
 
 
+
 # include <mlx.h>
-# include <mlx_int.h>
+# include <mlx_int.h> 
 # include <math.h>
 # include <stdlib.h>
 # include <sys/types.h>
@@ -53,6 +54,9 @@ OUTSIDE THE MAP"
 # define ERR_MISSING "ERROR: ONE OF THE PARAMETERS OR MORE IS MISSING"
 # define ERR_BEHIND "ERROR: ONLY WHITE SPACE IS ALLOW BEHIND THE MAP"
 
+
+# define PI 3.14159265
+
 typedef enum e_parsing_types
 {
 	NO,
@@ -65,6 +69,8 @@ typedef enum e_parsing_types
 
 typedef struct s_parsing
 {
+	char	**map;
+	char	**e_map;
 	int		bool_parsing[6];
 	char	**str_parsing;
 	char	**param;
@@ -73,8 +79,18 @@ typedef struct s_parsing
 	char	white_space[7];
 }	t_parsing;
 
+typedef struct s_player
+{
+	float	x;
+	float	y;
+	float	next_x;
+	float	next_Y;
+	double	angle;
+}	t_player;
+
 typedef struct s_map
 {
+	char	**e_map;
 	char	**map;
 	int		*floor_color;
 	int		*ceiling_color;
@@ -87,9 +103,8 @@ typedef struct s_global
 	int			nb_of_line;
 	char		**file;
 	t_gc		*gc;
-	int			xp_position;
-	int			yp_position;
 	t_parsing	parsing;
+	t_player	player;
 	t_map		map;
 }	t_global;
 
@@ -117,6 +132,7 @@ void	get_param_and_map(t_global *data, int i, int j, int k);
 void	first_map_parsing(t_global *data);
 void	checking_map_line(t_global *data, int i, int j, int len_map);
 void	checking_player(t_global *data, int i, int j, int is_present);
+void	init_player_angle(t_global *data, char c);
 void	parsing_map(t_global *data);
 
 /* ------------ 4) are params correct ------------ */
@@ -131,6 +147,13 @@ void	are_params_correct(t_global *data);
 int		val_charset_cmp(char *to_find, char *str, int length, char *w_s);
 int		before_map(t_global *data, int i);
 int		charset(char c, char *str);
+
+/* -------------------- expand_map_size -------------------- */
+
+void	expand_map_size(t_global	*data);
+int		malloc_new_map(t_global	*data);
+int		fill_new_map(t_global *data, int size);
+void	expand(t_global *data, int sizex, int sizey);
 
 /* ******************* EXECUTION ******************* */
 

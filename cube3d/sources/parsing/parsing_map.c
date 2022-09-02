@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:26:52 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/08/30 04:22:34 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/02 09:30:47 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	first_map_parsing(t_global *g)
 		while (g->map.map[i][j])
 		{
 			if (charset(g->map.map[i][j], g->parsing.white_space))
-				g->map.map[i][j] = 32;
+				g->map.map[i][j] = '1';
 			else if (!charset(g->map.map[i][j], g->parsing.map_char))
 				ft_error(g->gc, ERR_MAP2);
 			j++;
@@ -60,6 +60,19 @@ void	checking_map_line(t_global *g, int i, int j, int len_map)
 	}
 }
 
+void	init_player_angle(t_global *data, char c)
+{
+	if (c == 'N')
+		data->player.angle = PI / 2;
+	if (c == 'W')
+		data->player.angle = PI;
+	if (c == 'S')
+		data->player.angle = PI + (PI / 2);
+	if (c == 'E')
+		data->player.angle = 0;
+
+
+}
 void	checking_player(t_global *data, int i, int j, int is_present)
 {
 	while (data->map.map[i])
@@ -72,8 +85,9 @@ void	checking_player(t_global *data, int i, int j, int is_present)
 			{
 				if (is_present == 0)
 				{
-					data->xp_position = i;
-					data->yp_position = j;
+					data->player.x = i;
+					data->player.y = j;
+					init_player_angle(data, data->map.map[i][j]);
 					is_present = 1;
 				}
 				else

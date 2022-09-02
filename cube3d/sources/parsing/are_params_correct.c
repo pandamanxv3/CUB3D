@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:23:07 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/08/30 04:22:34 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/02 10:02:05 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ int	*is_color_correct(t_global *g, int to_color, int i, int count)
 
 void	are_params_correct(t_global *data)
 {
-	data->map.ceiling_color = is_color_correct(data, C, -1, 0);
-	data->map.floor_color = is_color_correct(data, F, -1, 0);
+	data->map.ceiling_color = is_color_correct(data, 5, -1, 0);
+	data->map.floor_color = is_color_correct(data, 4, -1, 0);
 	if (!is_texture_unique(data))
 		ft_error(data->gc, ERR_TWICE);
 	if (!is_file_xpm(data))
