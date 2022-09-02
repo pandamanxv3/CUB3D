@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:26:52 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 09:30:47 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/02 10:13:24 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ void	first_map_parsing(t_global *g)
 	int	j;
 
 	i = 0;
-	while (g->map.map[i])
+	while (g->parsing.map[i])
 	{
 		j = 0;
-		while (g->map.map[i][j])
+		while (g->parsing.map[i][j])
 		{
-			if (charset(g->map.map[i][j], g->parsing.white_space))
-				g->map.map[i][j] = '1';
-			else if (!charset(g->map.map[i][j], g->parsing.map_char))
+			if (charset(g->parsing.map[i][j], g->parsing.white_space))
+				g->parsing.map[i][j] = '1';
+			else if (!charset(g->parsing.map[i][j], g->parsing.map_char))
 				ft_error(g->gc, ERR_MAP2);
 			j++;
 		}
@@ -35,27 +35,27 @@ void	first_map_parsing(t_global *g)
 
 void	checking_map_line(t_global *g, int i, int j, int len_map)
 {
-	if (i == 0 || j == 0 || j == ft_strlen(g->map.map[i]) - 1
+	if (i == 0 || j == 0 || j == ft_strlen(g->parsing.map[i]) - 1
 		|| i == len_map - 1)
 		ft_error(g->gc, ERR_MAP);
 	if (i != 0)
 	{
-		if (!charset(g->map.map[i - 1][j], g->parsing.map_char))
+		if (!charset(g->parsing.map[i - 1][j], g->parsing.map_char))
 			ft_error(g->gc, ERR_MAP);
 	}
 	if (j != 0)
 	{
-		if (!charset(g->map.map[i][j - 1], g->parsing.map_char))
+		if (!charset(g->parsing.map[i][j - 1], g->parsing.map_char))
 			ft_error(g->gc, ERR_MAP);
 	}
-	if (j != ft_strlen(g->map.map[i]) - 1)
+	if (j != ft_strlen(g->parsing.map[i]) - 1)
 	{
-		if (!charset(g->map.map[i][j + 1], g->parsing.map_char))
+		if (!charset(g->parsing.map[i][j + 1], g->parsing.map_char))
 			ft_error(g->gc, ERR_MAP);
 	}
 	if (i != len_map - 1)
 	{
-		if (!charset(g->map.map[i + 1][j], g->parsing.map_char))
+		if (!charset(g->parsing.map[i + 1][j], g->parsing.map_char))
 			ft_error(g->gc, ERR_MAP);
 	}
 }
@@ -75,19 +75,19 @@ void	init_player_angle(t_global *data, char c)
 }
 void	checking_player(t_global *data, int i, int j, int is_present)
 {
-	while (data->map.map[i])
+	while (data->parsing.map[i])
 	{
 		j = 0;
-		while (data->map.map[i][j])
+		while (data->parsing.map[i][j])
 		{
-			if (data->map.map[i][j] == 'N' || data->map.map[i][j] == 'S'
-			|| data->map.map[i][j] == 'W' || data->map.map[i][j] == 'E')
+			if (data->parsing.map[i][j] == 'N' || data->parsing.map[i][j] == 'S'
+			|| data->parsing.map[i][j] == 'W' || data->parsing.map[i][j] == 'E')
 			{
 				if (is_present == 0)
 				{
 					data->player.x = i;
 					data->player.y = j;
-					init_player_angle(data, data->map.map[i][j]);
+					init_player_angle(data, data->parsing.map[i][j]);
 					is_present = 1;
 				}
 				else
@@ -109,15 +109,15 @@ void	parsing_map(t_global *g)
 
 	len_map = 0;
 	i = 0;
-	while (g->map.map[len_map])
+	while (g->parsing.map[len_map])
 		len_map++;
 	first_map_parsing(g);
-	while (g->map.map[i])
+	while (g->parsing.map[i])
 	{
 		j = 0;
-		while (g->map.map[i][j])
+		while (g->parsing.map[i][j])
 		{
-			if (charset(g->map.map[i][j], g->parsing.map_char2))
+			if (charset(g->parsing.map[i][j], g->parsing.map_char2))
 				checking_map_line(g, i, j, len_map);
 			j++;
 		}

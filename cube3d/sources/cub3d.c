@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 09:57:57 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/02 10:09:36 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,15 @@ void	parsing(t_global *data, char *path)
 
 int	main(int argc, char **argv)
 {
-	t_global	*data;
+	t_global	data;
 
 	if (argc == 1 || argc > 2)
 	{
 		write(1, ERR_ARGC, sizeof(ERR_ARGC));
 		return (1);
 	}
-	data = malloc(sizeof(t_global)); // secure et free
-
-	parsing(data, argv[1]);
-	execution(data);
-	ft_free(data->gc);
+	parsing(&data, argv[1]);
+	execution(&data);
+	ft_free(data.gc);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 09:29:18 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/02 10:13:54 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ typedef struct s_player
 
 typedef struct s_map
 {
-	char	**e_map;
 	char	**map;
 	int		*floor_color;
 	int		*ceiling_color;

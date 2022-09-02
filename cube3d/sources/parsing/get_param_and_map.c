@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:34:10 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 09:47:19 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/02 10:12:52 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ void	get_map(t_global *data, int i)
 
 	j = 0;
 	count = size_map(data, i);
-	data->map.map = malloc(sizeof(char *) * (count + 1));
-	if (!data->map.map)
+	data->parsing.map = malloc(sizeof(char *) * (count + 1));
+	if (!data->parsing.map)
 		ft_error(data->gc, ERR_MALL);
-	ft_gcadd_back(data->gc, ft_gcnew(data->map.map, data->gc));
-	data->map.map[count] = NULL;
+	ft_gcadd_back(data->gc, ft_gcnew(data->parsing.map, data->gc));
+	data->parsing.map[count] = NULL;
 	while (j < count)
-		data->map.map[j++] = data->file[i++];
+		data->parsing.map[j++] = data->file[i++];
 	while (data->file[i])
 	{
 		j = 0;
