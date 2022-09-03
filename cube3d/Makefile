@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/06/03 03:43:32 by cbarbit           #+#    #+#              #
-#    Updated: 2022/09/02 08:58:44 by aboudjel         ###   ########.fr        #
+#    Created: 2022/09/03 04:38:46 by aboudjel          #+#    #+#              #
+#    Updated: 2022/09/03 05:32:26 by aboudjel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ C_FILES =	sources/cub3d.c sources/parsing/get_param_and_map.c \
 			sources/parsing/parsing_map.c sources/parsing/utils_parsing.c \
 			sources/parsing/are_params_correct.c \
 			sources/parsing/init_struct.c \
-			sources/parsing/get_file.c sources/parsing/expand_map_size.c
+			sources/parsing/get_file.c sources/parsing/expand_map_size.c \
+			sources/parsing/ft_get_pixel.c sources/hook.c
 			
 CC = cc
 

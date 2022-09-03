@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 10:13:54 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/03 05:34:30 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ typedef enum e_parsing_types
 	C,
 }	t_parsing_types;
 
+typedef enum e_keycode {
+	UP = 119,
+	DOWN = 115,
+	LEFT = 97,
+	RIGHT = 100,
+	ESCAPE = 65307,
+}				t_keycode;
+
 typedef struct s_parsing
 {
 	char	**map;
@@ -90,11 +98,27 @@ typedef struct s_player
 
 typedef struct s_map
 {
+	int		hauteur;
+	int		largeur;
 	char	**map;
 	int		*floor_color;
 	int		*ceiling_color;
 	char	*wall_path[4];
 }	t_map;
+
+
+typedef struct s_mlx
+{
+	void		*mlx;
+	void		*win;
+	void		*frame_buf;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+}	t_mlx;
+
+
 
 typedef struct s_global
 {
@@ -102,6 +126,7 @@ typedef struct s_global
 	int			nb_of_line;
 	char		**file;
 	t_gc		*gc;
+	t_mlx		mlx;
 	t_parsing	parsing;
 	t_player	player;
 	t_map		map;
@@ -117,6 +142,7 @@ void	get_tab_malloc(t_global *data);
 void	get_file(t_global *data);
 void	checking_file_name(char *path);
 void	ft_init_struct(t_global *data, char *path);
+void	init_var(t_global *g, t_gc *gc);
 
 /* ------------- 2) get param and map ------------- */
 
@@ -149,6 +175,7 @@ int		charset(char c, char *str);
 
 /* -------------------- expand_map_size -------------------- */
 
+void 	copy_to_expand(t_global *data, int sizex, int sizey);
 void	expand_map_size(t_global	*data);
 int		malloc_new_map(t_global	*data);
 int		fill_new_map(t_global *data, int size);
@@ -157,5 +184,16 @@ void	expand(t_global *data, int sizex, int sizey);
 /* ******************* EXECUTION ******************* */
 
 void	execution(t_global *data);
+
+unsigned int	ft_get_pixel(int x, int y, void *img);
+void			put_pixel_to_frame_buf(t_global *data, int x, int y, int color);
+int				ft_screen(t_global *data);
+
+
+int				ft_useless(t_global *data);
+void			ft_hooks(t_global *data);
+void			ft_moves(t_global *data);
+int				key_hook(int keycode, t_global *data);
+
 
 #endif

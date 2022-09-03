@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:26:52 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 10:13:24 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/03 06:17:59 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void	checking_player(t_global *data, int i, int j, int is_present)
 			{
 				if (is_present == 0)
 				{
-					data->player.x = i;
-					data->player.y = j;
+					data->player.x = i * 64;
+					data->player.y = j * 64;
 					init_player_angle(data, data->parsing.map[i][j]);
 					is_present = 1;
 				}

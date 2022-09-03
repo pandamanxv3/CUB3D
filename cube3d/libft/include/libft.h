@@ -78,12 +78,13 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size);
 
 // gnl 
 
-char	*ft_strjoingnl(char *s1, char *s2);
-int		ft_checkendofline(char *buffer_save);
-char	*ft_print_line(char *buffer_save);
-char	*ft_get_buffer_save(char *buffer_save);
-char	*ft_read(int fd, char *buffer_read);
 char	*get_next_line(int fd);
+char	*ft_strchr_ad(const char *s, int c);
+char	*ft_strjoin_ad(char *s1, char *s2);
+size_t	ft_strlen_ad(const char *s);
+void	*ft_memcpy_ad(void *dst, const void *src, size_t n);
+char	*ft_fill_str(int fd, char *str);
+char	*find_line(char *save);
 
 // split
 

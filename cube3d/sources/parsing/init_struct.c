@@ -6,18 +6,19 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:39:54 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 09:47:37 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/03 04:28:30 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-static void	init_var(t_parsing	*parsing, t_gc *gc)
+void	init_var(t_global *g, t_gc *gc)
 {
-	ft_memcpy(&parsing->map_char2, &"0NSEW\0", 6);
-	ft_memcpy(&parsing->map_char, &"01NSEW\0", 7);
-	ft_memcpy(&parsing->white_space, &"\f\t\n\r\v \0", 7);
-	parsing->param = ft_dispatchsplit("NO SO WE EA F C", ' ', gc);
+	// ft_strdup()
+	ft_memcpy(&g->parsing.map_char2, &"0NSEW\0", 6);
+	ft_memcpy(&g->parsing.map_char, &"01NSEW\0", 7);
+	ft_memcpy(&g->parsing.white_space, &"\f\t\n\r\v \0", 7);
+	g->parsing.param = ft_dispatchsplit("NO SO WE EA F C", ' ', gc);
 }
 
 void	checking_file_name(char *path)
@@ -51,7 +52,7 @@ void	ft_init_struct(t_global *g, char *path)
 	int	i;
 
 	g->gc = ft_gcnew(NULL, NULL);
-	init_var(&g->parsing, g->gc);
+	init_var(g, g->gc);
 	i = -1;
 	checking_file_name(path);
 	while (i < 6)
