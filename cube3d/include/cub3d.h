@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/04 08:09:31 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/05 01:22:25 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,15 @@ OUTSIDE THE MAP"
 # define ERR_DOUBLE "ERROR: ONE OF THE PARAMETERS APPEARS TWICE"
 # define ERR_MISSING "ERROR: ONE OF THE PARAMETERS OR MORE IS MISSING"
 # define ERR_BEHIND "ERROR: ONLY WHITE SPACE IS ALLOW BEHIND THE MAP"
+
+# define BLUE 0x4400CC
+# define RED 0xEE1122
+# define PURPLE 0x31125A
+# define YELLOW 0xF7FB4B
+# define GREEN 0x388A73
+# define PINK 0xF4BBCC
+# define ORANGE 0xFF9738
+# define WHITE 0x000000
 
 
 # define PI 3.14159265
@@ -130,6 +139,8 @@ typedef struct s_global
 	t_parsing	parsing;
 	t_player	player;
 	t_map		map;
+	int			decalage_x;
+	int			decalage_y;
 }	t_global;
 
 /* ******************* PARSING ******************* */
@@ -172,6 +183,7 @@ void	are_params_correct(t_global *data);
 int		val_charset_cmp(char *to_find, char *str, int length, char *w_s);
 int		before_map(t_global *data, int i);
 int		charset(char c, char *str);
+void	put_cercle(t_global *data, int x, int y, int color);
 
 /* -------------------- expand_map_size -------------------- */
 
