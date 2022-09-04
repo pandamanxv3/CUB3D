@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/04 07:17:43 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/04 08:39:27 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,14 @@ void	move_angle(t_global *data, enum e_keycode direction)
 	if (direction == LEFT)
 	{
 		data->player.angle -= 0.1;
-		if (data->player.angle < 0)
-			data->player.angle += 2 * PI;
+		data->player.angle = modulo(data->player.angle, 2 * PI);//
 	}
 	else if (direction == RIGHT)
 	{
 		data->player.angle += 0.1;
-		if (data->player.angle > 2 * PI)
-			data->player.angle -= 2 * PI;
+		data->player.angle = modulo(data->player.angle, 2 * PI);
 	}
-}
+} 
 
 int	key_hook(int keycode, t_global *data)
 {

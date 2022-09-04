@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/04 08:06:43 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/04 08:33:27 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_raycasting(t_global *data, int col2, int row2)
 		adj_x = - modulo(data->player.x, 64); printf("Bbbbbbbbbbbbbbbbbbbb\n");
 	}
 	printf("coord : x : %f\t y : %f\n", data->player.x, data->player.y);
-	printf("adj : %f\nangle : %f\n", adj_x, data->player.angle);
+	printf("adj : %f\nangle conv: %f\nangle \t: %f\n", adj_x, conv_rad(data->player.angle), data->player.angle);
 	for (float i = 0; i < 2 * PI; i += 0.1f)
 		for (float j = 0 ; j < 4; j += 0.1f)
 			put_pixel_to_frame_buf(data, col2 + data->player.x + adj_x - (cos(i) * j),
@@ -179,8 +179,8 @@ int	ft_screen(t_global *data)
 			put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(i) * j),
 							row2 + data->player.y - (sin(i)* j), 0xFFC0CB);
 	for (int i = 0; i < 30; i++)
-		put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(conv_rad(data->player.angle)) * i),
-						row2 + data->player.y - (sin(conv_rad(data->player.angle))* i), 0xFFC0CB);
+		put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(data->player.angle) * i),
+						row2 + data->player.y - (sin(data->player.angle)* i), 0xFFC0CB);
 	ft_raycasting(data, col2, row2);
 	// ft_image_to_frame(data, data->player.img, data->player.row,
 	// 	data->player.col);
