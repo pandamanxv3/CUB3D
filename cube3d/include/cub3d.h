@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/03 05:34:30 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/04 08:09:31 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,12 +188,15 @@ void	execution(t_global *data);
 unsigned int	ft_get_pixel(int x, int y, void *img);
 void			put_pixel_to_frame_buf(t_global *data, int x, int y, int color);
 int				ft_screen(t_global *data);
+float 			modulo(float value, float mod_value);
 
+float 			conv_rad(float angle);
 
 int				ft_useless(t_global *data);
 void			ft_hooks(t_global *data);
 void			ft_moves(t_global *data);
 int				key_hook(int keycode, t_global *data);
 
+int ft_raycasting(t_global *data, int col2, int row2);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:26:52 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/03 06:17:59 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/04 08:09:03 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,15 @@ void	checking_map_line(t_global *g, int i, int j, int len_map)
 void	init_player_angle(t_global *data, char c)
 {
 	if (c == 'N')
-		data->player.angle = PI / 2;
+		data->player.angle = conv_rad(PI / 2);
 	if (c == 'W')
-		data->player.angle = PI;
+		data->player.angle = conv_rad(PI);
 	if (c == 'S')
-		data->player.angle = PI + (PI / 2);
+		data->player.angle = conv_rad(PI + (PI / 2));
 	if (c == 'E')
-		data->player.angle = 0;
+		data->player.angle = conv_rad(0);
+	data->player.next_x = data->player.x + cos(data->player.angle);
+	data->player.next_Y = data->player.y + sin(data->player.angle);
 
 
 }
@@ -85,8 +87,8 @@ void	checking_player(t_global *data, int i, int j, int is_present)
 			{
 				if (is_present == 0)
 				{
-					data->player.x = i * 64;
-					data->player.y = j * 64;
+					data->player.y = i * 64 + 32;
+					data->player.x = j * 64 + 32;
 					init_player_angle(data, data->parsing.map[i][j]);
 					is_present = 1;
 				}
