@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/05 06:06:41 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/05 10:50:46 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ OUTSIDE THE MAP"
 # define ORANGE 0xFF9738
 # define WHITE 0x000000
 
-
+# define FOV 60
+# define DEGREE 0.0174532925
 # define PI 3.14159265
 
 typedef enum e_parsing_types
@@ -127,10 +128,17 @@ typedef struct s_mlx
 	int			endian;
 }	t_mlx;
 
+typedef struct s_subray
+{
+	float	collision_x;
+	float	collision_y;
+	float 	distance;
+} t_subray;
+
 typedef struct s_ray
 {
-	struct s_ray	*ray_hor;
-	struct s_ray	*ray_ver;
+	t_subray	ray_hor;
+	t_subray	ray_ver;
 	float	collision_x;
 	float	collision_y;
 	float 	distance;
@@ -142,13 +150,14 @@ typedef struct s_global
 	char		*path;
 	int			nb_of_line;
 	char		**file;
-
+	int 	last_input;
+	int 	current_input; 
 	t_gc		*gc;
 	t_mlx		mlx;
 	t_parsing	parsing;
 	t_player	player;
 	t_map		map;
-	t_ray		*ray;
+	t_ray		ray[FOV];
 	int			decalage_x;
 	int			decalage_y;
 }	t_global;
@@ -210,9 +219,12 @@ void	execution(t_global *data);
 unsigned int	ft_get_pixel(int x, int y, void *img);
 void			put_pixel_to_frame_buf(t_global *data, int x, int y, int color);
 int				ft_screen(t_global *data);
-float 			modulo(float value, float mod_value);
 
+
+float 			modulo(float value, float mod_value);
 float 			conv_rad(float angle);
+void			print_line(t_global *data, t_ray *ray, float color);
+void			set_ray(t_ray *to_set, t_subray to_copy);
 
 int				ft_useless(t_global *data);
 void			ft_hooks(t_global *data);
@@ -220,8 +232,8 @@ void			ft_moves(t_global *data);
 int				key_hook(int keycode, t_global *data);
 
 void	ft_raycasting(t_global *data);
-float	ft_raycasting_horizontal(t_global *data, double angle, float to_add);
-float	ft_raycasting_vertical(t_global *data, double angle, float to_add);
-void	first_collision(t_global *data, float collision_x, float collision_y, float distance);
+float	ft_find_collision(t_global *data, t_ray *ray, float (*raycast)(t_global*, t_ray*, float));
+float	ft_raycasting_horizontal(t_global *data, t_ray *ray, float to_add);
+float	ft_raycasting_vertical(t_global *data, t_ray *ray, float to_add);
 
 #endif
