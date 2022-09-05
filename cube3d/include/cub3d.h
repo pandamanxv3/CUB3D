@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/05 03:11:49 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/05 06:06:41 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,12 @@ typedef struct s_mlx
 
 typedef struct s_ray
 {
+	struct s_ray	*ray_hor;
+	struct s_ray	*ray_ver;
 	float	collision_x;
 	float	collision_y;
 	float 	distance;
+	double	angle;
 }	t_ray;
 
 typedef struct s_global
@@ -217,8 +220,8 @@ void			ft_moves(t_global *data);
 int				key_hook(int keycode, t_global *data);
 
 void	ft_raycasting(t_global *data);
-float	ft_raycasting_horizontal(t_global *data, double angle, int to_add);
-float	ft_raycasting_vertical(t_global *data, double angle, int to_add);
+float	ft_raycasting_horizontal(t_global *data, double angle, float to_add);
+float	ft_raycasting_vertical(t_global *data, double angle, float to_add);
 void	first_collision(t_global *data, float collision_x, float collision_y, float distance);
 
 #endif

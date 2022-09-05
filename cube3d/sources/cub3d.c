@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/05 03:21:09 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/05 06:07:38 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	first_collision(t_global *data, float collision_x, float collision_y, float
 }
 
 
-float	ft_raycasting_vertical(t_global *data, double angle, int to_add)
+float	ft_raycasting_vertical(t_global *data, double angle, float to_add)
 {
 	float 	adj_y;
 	float 	distance;
@@ -59,18 +59,18 @@ float	ft_raycasting_vertical(t_global *data, double angle, int to_add)
 	if (conv_rad(angle) > 0 && conv_rad(angle) < PI) 
 	{
 		if (data->map.map[(int)round(collision_y) + 32][(int)round(collision_x)] == '1')
-			return(first_collision(data, collision_x,collision_y, distance), 1); //mettre un pointeur sur le rayon en question a la place de data
+			return(first_collision(data, collision_x, collision_y, distance), distance);
 	}
 	else
 	{
 		if (data->map.map[(int)round(collision_y) - 32][(int)round(collision_x)] == '1')
-			return(first_collision(data, collision_x,collision_y, distance), 1);
+			return(first_collision(data, collision_x,collision_y, distance), distance);
 	}
-	return(0);
+	return(-1);
 }
 
 
-float	ft_raycasting_horizontal(t_global *data, double angle, int to_add)
+float	ft_raycasting_horizontal(t_global *data, double angle, float to_add)
 {
 	float 	adj_x;
 	float 	distance;
@@ -80,7 +80,7 @@ float	ft_raycasting_horizontal(t_global *data, double angle, int to_add)
 	if ((angle < (PI / 2)) || (angle > (PI + (PI / 2))))
 		adj_x = 64 - modulo(data->player.x, 64) + to_add;
 	else
-		adj_x = - modulo(data->player.x, 64) - to_add;
+		adj_x = - modulo(data->player.x, 64) -  to_add;
 	collision_x = data->player.x + adj_x;
 	distance = adj_x / cos(angle);
 	if (distance < 0)
@@ -101,40 +101,13 @@ float	ft_raycasting_horizontal(t_global *data, double angle, int to_add)
 		if (data->map.map[(int)round(collision_y)][(int)round(collision_x) - 32] == '1')
 			return(first_collision(data, collision_x, collision_y, distance), distance);
 	}
-	return (0);
+	return (-1);
 }
 
-void	ft_raycasting(t_global *data)
+
+
+void	print_line(t_global *data) //doit prendre un ray
 {
-	int	to_add;
-	int	distance_ver;
-	int	distance_hor;
-
-	to_add = 0;
-	while (1)
-	{
-		distance_ver = ft_raycasting_vertical(data, data->player.angle, to_add);
-		distance_hor = ft_raycasting_horizontal(data, data->player.angle, to_add);
-		printf("%d, %d\n", distance_ver, distance_hor);
-		if(distance_ver != 0 || distance_hor != 0)
-		{
-			puts("coucou");
-			if (distance_hor < distance_ver && distance_hor != 0)
-			{
-				puts("coucou2");
-
-				break;
-			}
-			else
-			{
-				puts("coucou3");
-				ft_raycasting_vertical(data, data->player.angle, to_add);
-			}
-		}
-		to_add += 64;
-		if (to_add > 600)
-			ft_error(data->gc, "finish");
-	}
 	for (float i = 0; i < data->ray->distance; i += 0.1f)
 				put_pixel_to_frame_buf(data, data->decalage_x + data->ray->collision_x - (cos(i)),
 								data->decalage_y + data->player.y - (sin(i)), 0xBDB67A);
@@ -142,6 +115,86 @@ void	ft_raycasting(t_global *data)
 		put_pixel_to_frame_buf(data, data->decalage_x + data->player.x + (cos(conv_rad(data->player.angle)) * i),
 						data->decalage_y + data->player.y + (sin(conv_rad(data->player.angle))* i), 0xFFC0CB);
 }
+
+
+// void	ft_find_collision(t_global *data, double angle, float (*raycast)(t_global*, double, float))
+// {
+// 	float	to_add;
+// 	float	distance;
+
+// 	distance = raycast(data, angle, to_add);
+// 	to_add = 0;
+// 	while (distance == -1)
+// 	{
+// 		to_add += 64;
+// 		distance = raycast(data, angle, to_add);
+// 	}
+// 	return (distance);
+// }
+
+// void	ft_raycasting(t_global *data)
+// {
+
+// 	float	distance_ray_ver;
+// 	float	distance_ray_hor;
+
+	
+// 	distance_ray_ver = 
+// 	distance_ray_hor = ft_find_collision(data, data->player.angle,)
+	
+
+// 	if (distance_ray_hor == 0)
+// 		distance_ray_ver = ft_raycasting_vertical(data, data->player.angle, to_add_y);
+// 	else if (distance_ray_ver == 0)
+// 		;
+// 	else if (distance_ray_hor <= distance_ray_ver)
+// 		distance_ray_hor = ft_raycasting_horizontal(data, data->player.angle, to_add_x);
+// 	else
+// 		distance_ray_ver = ft_raycasting_vertical(data, data->player.angle, to_add_y);
+// 	print_line(data);
+// }
+
+void	ft_raycasting(t_global *data)
+{
+	float	to_add_x;
+	float	to_add_y;
+	float	distance_ver;
+	float	distance_hor;
+
+	to_add_x = 0;
+	
+	to_add_y = 0;
+	
+	distance_ver = ft_raycasting_vertical(data, data->player.angle, to_add_y);
+	
+	distance_hor = ft_raycasting_horizontal(data, data->player.angle, to_add_x);
+	
+	while (distance_ver == -1)
+	{
+		to_add_y += 64;
+		distance_ver = ft_raycasting_vertical(data, data->player.angle, to_add_y);
+	}
+
+	while (distance_hor == -1)
+	{
+		to_add_x += 64;
+		distance_hor = ft_raycasting_horizontal(data, data->player.angle, to_add_x);
+	}
+
+	if (distance_hor == 0)
+		distance_ver = ft_raycasting_vertical(data, data->player.angle, to_add_y);
+	else if (distance_ver == 0)
+		;
+	else if (distance_hor <= distance_ver)
+		distance_hor = ft_raycasting_horizontal(data, data->player.angle, to_add_x);
+	else
+	{
+		distance_ver = ft_raycasting_vertical(data, data->player.angle, to_add_y);
+	}
+	print_line(data);
+}
+
+
 int	ft_screen(t_global *data)
 {
 	int		row;
@@ -160,7 +213,6 @@ int	ft_screen(t_global *data)
 		col = 0;
 		while (data->map.map[row][col])
 		{
-			// printf("%s\n", data->map.map[row]);
 			if (row % 64 == 0 || col % 64 == 0)
 				put_pixel_to_frame_buf(data, (col2 + col),
 						 (row2 + row), 0x606060);
@@ -179,21 +231,12 @@ int	ft_screen(t_global *data)
 			col++;
 		}
 		row++;
-	}
-	
-	printf("%f %f\n", data->player.x, data->player.y);
+	}	
 	for (float i = 0; i < 2 * PI; i += 0.1f)
 		for (float j = 0 ; j < 10; j += 0.1f)
 			put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(i) * j),
 							row2 + data->player.y - (sin(i)* j), 0xFFC0CB);
-	// for (int i = 0; i < 30; i++)
-	// 	put_pixel_to_frame_buf(data, col2 + data->player.x + (cos(conv_rad(data->player.angle)) * i),
-	// 					row2 + data->player.y + (sin(conv_rad(data->player.angle))* i), 0xFFC0CB);
 	ft_raycasting(data);
-
-	// ft_image_to_frame(data, data->player.img, data->player.row,
-	// 	data->player.col);
-	// ft_moves(data);ssssss
 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->mlx.frame_buf, 0, 0);
 	return (0);
 }
