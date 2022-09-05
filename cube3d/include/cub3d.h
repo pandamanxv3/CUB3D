@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/05 10:50:46 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 01:29:16 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ typedef struct s_mlx
 
 typedef struct s_subray
 {
+	int		wall;
 	float	collision_x;
 	float	collision_y;
 	float 	distance;
@@ -139,6 +140,7 @@ typedef struct s_ray
 {
 	t_subray	ray_hor;
 	t_subray	ray_ver;
+	int		wall;
 	float	collision_x;
 	float	collision_y;
 	float 	distance;
@@ -151,6 +153,7 @@ typedef struct s_global
 	int			nb_of_line;
 	char		**file;
 	int 	last_input;
+	int		pre_last_input;
 	int 	current_input; 
 	t_gc		*gc;
 	t_mlx		mlx;

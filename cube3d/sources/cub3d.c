@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/05 10:51:13 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 01:50:47 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ float	ft_raycasting_horizontal(t_global *data, t_ray *ray, float to_add)
 		if (data->map.map[(int)round(ray->ray_hor.collision_y)][(int)round(ray->ray_hor.collision_x) + 32] == '1' ||
 			data->map.map[(int)round(ray->ray_hor.collision_y) + 1][(int)round(ray->ray_hor.collision_x) + 32] == '1' ||
 			data->map.map[(int)round(ray->ray_hor.collision_y) - 1][(int)round(ray->ray_hor.collision_x) + 32] == '1')
-			return(ray->ray_hor.distance);
+			return(ray->ray_hor.wall = WE, ray->ray_hor.distance);
 	}
 	else
 	{
 		if (data->map.map[(int)round(ray->ray_hor.collision_y)][(int)round(ray->ray_hor.collision_x) - 32] == '1' ||
 			data->map.map[(int)round(ray->ray_hor.collision_y) + 1][(int)round(ray->ray_hor.collision_x) - 32] == '1' ||
 			data->map.map[(int)round(ray->ray_hor.collision_y) - 1][(int)round(ray->ray_hor.collision_x) - 32] == '1')
-			return(ray->ray_hor.distance);
+			return(ray->ray_hor.wall = EA, ray->ray_hor.distance);
 	}
 	return (-1);
 }
@@ -85,14 +85,14 @@ float	ft_raycasting_vertical(t_global *data, t_ray *ray, float to_add)
 		if ((data->map.map[(int)round(ray->ray_ver.collision_y) + 32][(int)round(ray->ray_ver.collision_x)] == '1') ||
 			(data->map.map[(int)round(ray->ray_ver.collision_y) + 32][(int)round(ray->ray_ver.collision_x) - 1] == '1') ||
 			(data->map.map[(int)round(ray->ray_ver.collision_y) + 32][(int)round(ray->ray_ver.collision_x) + 1] == '1'))
-			return(ray->ray_ver.distance);
+			return(ray->ray_ver.wall = SO, ray->ray_ver.distance);
 	}
 	else
 	{
 		if (data->map.map[(int)round(ray->ray_ver.collision_y) - 32][(int)round(ray->ray_ver.collision_x)] == '1' ||
 			(data->map.map[(int)round(ray->ray_ver.collision_y) - 32][(int)round(ray->ray_ver.collision_x) - 1] == '1') ||
 			(data->map.map[(int)round(ray->ray_ver.collision_y) - 32][(int)round(ray->ray_ver.collision_x) + 1] == '1'))
-			return(ray->ray_ver.distance);
+			return(ray->ray_ver.wall = NO, ray->ray_ver.distance);
 	}
 	return(ray->ray_ver.distance = 0, -1);
 }
@@ -122,11 +122,31 @@ float	ft_find_collision(t_global *data, t_ray *ray, float (*raycast)(t_global*, 
 
 void	set_ray(t_ray *to_set, t_subray to_copy)
 {
+	to_set->wall = to_copy.wall;
 	to_set->collision_x = to_copy.collision_x;
 	to_set->collision_y = to_copy.collision_y;
 	to_set->distance = to_copy.distance;
 }
 
+void	print_pov(t_global *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < FOV)
+	{
+		if (data->ray[i].wall == SO)
+			print_line(data, &data->ray[i], BLUE);
+		else if (data->ray[i].wall == NO)
+			print_line(data, &data->ray[i], PINK);
+		else if (data->ray[i].wall == EA)
+			print_line(data, &data->ray[i], GREEN);
+		else
+			print_line(data, &data->ray[i], ORANGE);
+		i++;
+	}
+	print_line(data, &data->ray[FOV/2], RED);
+}
 void	ft_raycasting(t_global *data)
 {
 	float	distance_ray_ver;
@@ -149,10 +169,9 @@ void	ft_raycasting(t_global *data)
 			set_ray(&data->ray[i], data->ray[i].ray_hor);
 		else
 			set_ray(&data->ray[i], data->ray[i].ray_ver);
-		print_line(data, &data->ray[i], 0xFFC0CB);
 		i++;
 	}
-	print_line(data, &data->ray[FOV/2], RED);
+	print_pov(data);
 }
 
 

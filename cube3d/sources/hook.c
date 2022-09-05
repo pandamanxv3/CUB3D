@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/05 10:45:57 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/05 23:51:04 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,18 @@ static int	check_action(t_global *data, int row, int col)
 int myKeyReleaseFunc(int keycode, t_global *data)
 {
 	printf("release == %d\n", keycode);
-    if (data->last_input == keycode) //si mon ancien input a ete relache
-      data->last_input = 0;
+    if (data->last_input == keycode)
+	{
+		if (data->pre_last_input == 0)
+			data->last_input = 0;
+		else
+		{
+			data->last_input = data->pre_last_input;
+			data->pre_last_input = 0;
+		}
+	}
+	if (data->pre_last_input == keycode)
+		data->pre_last_input = 0;
 	return (0);
 }
 
@@ -91,6 +101,7 @@ int	key_hook(int keycode, t_global *data)
 	data->current_input = keycode;
     if (data->last_input == 0)
         data->last_input = data->current_input;
+	
     if (data->current_input != data->last_input && data->last_input != 0)
 		manage_key(data->last_input, data);
 	manage_key(keycode, data);
