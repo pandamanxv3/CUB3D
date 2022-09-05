@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/05 01:22:25 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/05 03:11:49 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,18 +127,25 @@ typedef struct s_mlx
 	int			endian;
 }	t_mlx;
 
-
+typedef struct s_ray
+{
+	float	collision_x;
+	float	collision_y;
+	float 	distance;
+}	t_ray;
 
 typedef struct s_global
 {
 	char		*path;
 	int			nb_of_line;
 	char		**file;
+
 	t_gc		*gc;
 	t_mlx		mlx;
 	t_parsing	parsing;
 	t_player	player;
 	t_map		map;
+	t_ray		*ray;
 	int			decalage_x;
 	int			decalage_y;
 }	t_global;
@@ -209,6 +216,9 @@ void			ft_hooks(t_global *data);
 void			ft_moves(t_global *data);
 int				key_hook(int keycode, t_global *data);
 
-int ft_raycasting(t_global *data, int col2, int row2);
+void	ft_raycasting(t_global *data);
+float	ft_raycasting_horizontal(t_global *data, double angle, int to_add);
+float	ft_raycasting_vertical(t_global *data, double angle, int to_add);
+void	first_collision(t_global *data, float collision_x, float collision_y, float distance);
 
 #endif
