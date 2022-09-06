@@ -3,21 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+         #
+#    By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/03 04:38:46 by aboudjel          #+#    #+#              #
-#    Updated: 2022/09/05 01:12:43 by adben-mc         ###   ########.fr        #
+#    Updated: 2022/09/06 03:00:06 by aboudjel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = Cub3D
 
-C_FILES =	sources/cub3d.c sources/parsing/get_param_and_map.c \
+C_FILES =	sources/cub3d.c  \
+			sources/parsing/get_param_and_map.c \
 			sources/parsing/parsing_map.c sources/parsing/utils_parsing.c \
 			sources/parsing/are_params_correct.c \
 			sources/parsing/init_struct.c \
 			sources/parsing/get_file.c sources/parsing/expand_map_size.c \
-			sources/parsing/ft_get_pixel.c sources/hook.c sources/utils.c
+			sources/exec/get_pixel.c sources/exec/print_utils.c\
+			sources/exec/hook.c sources/exec/hook_utils.c \
+			sources/exec/raycasting.c sources/exec/raycasting_utils.c
+
 			
 CC = cc
 

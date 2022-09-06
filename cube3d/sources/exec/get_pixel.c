@@ -6,11 +6,11 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 03:50:07 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/03 04:50:10 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 02:33:41 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 void	put_pixel_to_frame_buf(t_global *data, int x, int y, int color)
 {

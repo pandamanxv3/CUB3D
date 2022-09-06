@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/06 01:29:16 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 03:04:49 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,24 +219,44 @@ void	expand(t_global *data, int sizex, int sizey);
 
 void	execution(t_global *data);
 
+/* ------------------- print_utils -------------------- */
+
 unsigned int	ft_get_pixel(int x, int y, void *img);
 void			put_pixel_to_frame_buf(t_global *data, int x, int y, int color);
+void			print_pov(t_global *data);
+void 			put_cercle(t_global *data, int x, int y, int color);
+
+/* -------------------- get_pixel -------------------- */
+
 int				ft_screen(t_global *data);
-
-
-float 			modulo(float value, float mod_value);
-float 			conv_rad(float angle);
 void			print_line(t_global *data, t_ray *ray, float color);
-void			set_ray(t_ray *to_set, t_subray to_copy);
+
+
+/* ---------------------- hook ---------------------- */
 
 int				ft_useless(t_global *data);
+int				check_action(t_global *data, int row, int col);
+int 			myKeyReleaseFunc(int keycode, t_global *data);
+
+/* ------------------- hook_utils ------------------- */
+
 void			ft_hooks(t_global *data);
 void			ft_moves(t_global *data);
 int				key_hook(int keycode, t_global *data);
+void			move_angle(t_global *data, enum e_keycode direction);
 
-void	ft_raycasting(t_global *data);
-float	ft_find_collision(t_global *data, t_ray *ray, float (*raycast)(t_global*, t_ray*, float));
-float	ft_raycasting_horizontal(t_global *data, t_ray *ray, float to_add);
-float	ft_raycasting_vertical(t_global *data, t_ray *ray, float to_add);
+
+/* -------------------- raycasting -------------------- */
+
+void		ft_raycasting(t_global *data);
+float		ft_find_collision(t_global *data, t_ray *ray, float (*raycast)(t_global*, t_ray*, float));
+float		ft_raycasting_horizontal(t_global *data, t_ray *ray, float to_add);
+float		ft_raycasting_vertical(t_global *data, t_ray *ray, float to_add);
+void		set_ray(t_ray *to_set, t_subray to_copy);
+
+/* ----------------- raycasting utils------------------ */
+
+float 			modulo(float value, float mod_value);
+float 			conv_rad(float angle);
 
 #endif
