@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/04 08:39:27 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 03:55:36 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,52 +39,52 @@ void	move_angle(t_global *data, enum e_keycode direction)
 {
 	if (direction == LEFT)
 	{
-		data->player.angle -= 0.1;
-		data->player.angle = modulo(data->player.angle, 2 * PI);//
+		data->player.angle += 0.1;
+		data->player.angle = modulo(data->player.angle, 2 * PI);
 	}
 	else if (direction == RIGHT)
 	{
-		data->player.angle += 0.1;
+		data->player.angle -= 0.1;
 		data->player.angle = modulo(data->player.angle, 2 * PI);
 	}
 } 
 
 int	key_hook(int keycode, t_global *data)
 {
-	printf("%d\n", keycode);
+	// printf("%d\n", keycode);
 	if (keycode == ESCAPE)
 		ft_useless(data);
 	if (keycode == UP)
 	{
+		data->player.next_x = data->player.x - (cos(-data->player.angle) * 5);
+		data->player.next_Y = data->player.y - (sin(-data->player.angle) * 5);
 		if (check_action(data, data->player.next_x, data->player.next_Y))
 		{
 			data->player.y = data->player.next_Y;
 			data->player.x = data->player.next_x;
 		}
-		data->player.next_x = data->player.x - (cos(data->player.angle) * 5);
-		data->player.next_Y = data->player.y - (sin(data->player.angle) * 5);
 	}
 	if (keycode == DOWN)
 	{
+		data->player.next_Y = data->player.y + (sin(-data->player.angle) * 5);
+		data->player.next_x = data->player.x + (cos(-data->player.angle) * 5);
 		if (check_action(data, data->player.next_x, data->player.next_Y))
 		{
 			data->player.y = data->player.next_Y;
 			data->player.x = data->player.next_x;
 		}
-		data->player.next_x = data->player.x + (cos(data->player.angle) * 5);
-		data->player.next_Y = data->player.y + (sin(data->player.angle) * 5);
 	}
 	if (keycode == LEFT)
 	{
 		move_angle(data, LEFT);
-		data->player.next_x = data->player.x - (cos(data->player.angle) * 5);
-		data->player.next_Y = data->player.y - (sin(data->player.angle) * 5);
+		data->player.next_x = data->player.x - (cos(-data->player.angle) * 5);
+		data->player.next_Y = data->player.y - (sin(-data->player.angle) * 5);
 	}
 	if (keycode == RIGHT)
 	{
 		move_angle(data, RIGHT);
-		data->player.next_x = data->player.x - (cos(data->player.angle) * 5);
-		data->player.next_Y = data->player.y - (sin(data->player.angle) * 5);
+		data->player.next_x = data->player.x - (cos(-data->player.angle) * 5);
+		data->player.next_Y = data->player.y - (sin(-data->player.angle) * 5);
 	}
 	mlx_clear_window(data->mlx.mlx, data->mlx.win);
 	ft_screen(data);

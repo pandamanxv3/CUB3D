@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/04 08:33:27 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/07 01:47:50 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,165 +26,228 @@ float conv_rad(float angle)
 	return (modulo(angle + PI, 2 * PI));
 }
 
-// int	ft_raycasting(t_global *data)
-// {
-// 	int r,mx, my, mp, dof;
-// 	float rx, ry, ra, xo, yo;
+float abs_f(float value)
+{
+	if (value < 0)
+		return (-value);
+	return (value);
+}
 
-// 	ra = data->player.angle;
-// 	for (int r = 0; r < 1; r++)
-// 	{a
-// 		dof = 0;
-// 		float aTan = -1 / tan(ra);
-// 		if (ra < PI){
-// 			ry = (((int)(data->player.x / 64) >> 6) << 6) - 0.0001;
-// 			rx = (data->player.y - )
-// 		}
-// 	}
+float	get_distance(float x1, float y1, float x2, float y2)
+{
+	return (sqrt(pow(y1 - y2, 2) + pow(x2 - x1, 2)));
+}
+
+void	print_line(t_global *data, float distance, float angle, float color)
+{
+	for (int i = 0; i < distance; i++)
+		put_pixel_to_frame_buf(data, data->decalage_x + data->player.x - (cos(angle) * i),
+						data->decalage_y + data->player.y + (sin(angle) * i), color);
+}
+
+
+// void	print_line_down(t_global *data, float distance)
+// {
+// 	for (int i = 0; i < distance; i++)
+// 		put_pixel_to_frame_buf(data, data->decalage_x + data->player.x - (cos(angle) * i),
+// 						data->decalage_y + data->player.y + (sin(angle) * i), color);
 // }
 
-int	ft_raycasting(t_global *data, int col2, int row2)
+void	print_square(t_global *data, float x1, float y1, float x2, float y2)
 {
-	float adj_x;
-	// float distance;
-	// float	col_x;
-	// float	col_y;
+	int	i;
+	int	j;
 
-	if (((conv_rad(data->player.angle) < (PI / 2))) || (conv_rad(data->player.angle) > (PI + (PI / 2)))) //regarde a droite
+	printf("x1:%f \t y1:%f\n", x1, y1);
+	printf("x2:%f \t y2:%f\n", x2, y2);
+	i = (x1 < x2) * x1 + (!(x1 < x2)) * x2;
+	while (i < abs_f(x1 - x2))
 	{
-		adj_x = 64 - modulo(data->player.x, 64); printf("Aaaaaaaaaaaaaaaa\n");
+		j = (y1 < y2) * y1 + (!(y1 < y2)) * y2;
+		while (j < abs_f(y1 - y2))
+		{
+			printf("printing\n");
+			put_pixel_to_frame_buf(data, data->decalage_x + i,
+						data->decalage_y + j, GREEN);
+			put_cercle(data, data->decalage_x + i,
+						data->decalage_y + j, GREEN);
+			printf("x2:%f \t y2:%f\n", x2, y2);
+			j++;
+		}
+		i++;
 	}
-	else //  ((data->player.angle > (PI / 2)) && (data->player.angle < (2 * PI))) //regarde a gauche
-	{
-		adj_x = - modulo(data->player.x, 64); printf("Bbbbbbbbbbbbbbbbbbbb\n");
-	}
-	printf("coord : x : %f\t y : %f\n", data->player.x, data->player.y);
-	printf("adj : %f\nangle conv: %f\nangle \t: %f\n", adj_x, conv_rad(data->player.angle), data->player.angle);
-	for (float i = 0; i < 2 * PI; i += 0.1f)
-		for (float j = 0 ; j < 4; j += 0.1f)
-			put_pixel_to_frame_buf(data, col2 + data->player.x + adj_x - (cos(i) * j),
-							row2 + data->player.y - (sin(i)* j), 0xFFC0CB);
-// 	distance = adj_x / cos(data->player.angle);
-// 	if (distance < 0)
-// 		distance = -distance;
-// // 		printf("adj = %f hypotheus : %f\n", adj_x, distance);
-// 	col_x = data->player.x + adj_x;
-// 	for (float i = 0; i < 2 * PI; i += 0.1f)
-// 		for (float j = 0 ; j < 4; j += 0.1f)
-// 			put_pixel_to_frame_buf(data, col2 + col_x - (cos(i) * j),
-// 							row2 + data->player.y - (sin(i)* j), 0xBDB67A);
-// 	if (data->player.angle > 0 && data->player.angle < PI)
-// 		col_y = data->player.y + (sqrt(pow(distance, 2) - pow(adj_x, 2))); 
-// 	else // else if (data->player.angle >= PI && data->player.angle <= PI*2)
-// 		col_y = data->player.y - (sqrt(pow(distance, 2) - pow(adj_x, 2)));
-// 	for (float i = 0; i < 2 * PI; i += 0.1f)
-// 		for (float j = 0 ; j < 4; j += 0.1f)
-// 			put_pixel_to_frame_buf(data, col2 + col_x - (cos(i) * j),
-// 							row2 + col_y - (sin(i)* j), 0xBD857A);
+}
 
+
+int vision(float angle)
+{
+	angle = conv_rad(angle);
+	if (angle >= 0 && angle <= (PI / 2))
+		return (NE);
+	else if (angle >= (PI / 2) && angle <= PI)
+		return (NW);
+	else if (angle >= PI && angle <= (PI + (PI / 2)))
+		return (SW);
+	return (SE);
+}
+
+int	collision(t_global *data, int coord_x, int coord_y)
+{
+	int	i;
+	int	j;
+
+	if (coord_x < 0 || coord_x > data->map.largeur * TXT_SIZE ||
+		coord_y < 0 || coord_y > data->map.hauteur * TXT_SIZE)
+		return (1);
+	i = -2;
+	while (++i < 2)
+	{
+		j = -2;
+		while (++j < 2)
+		{
+			if (coord_x + j < 0 || coord_x + j > data->map.largeur * 64 ||
+					coord_y + i < 0 || coord_y + i > data->map.hauteur * 64)
+				continue ;
+			if (data->map.map[coord_y + i][coord_x + j] == '1')
+				return (1);
+		}
+	}
 	return (0);
 }
 
-// int ft_raycasting(t_global *data, int col2, int row2)
-// {
-// 	float adj_x;
-// 	float distance;
-// 	float	col_x;
-// 	float	col_y;
+float	next_wall_h(t_global *data, float angle, int step)
+{
+	float next_y = data->player.y
+		+ ((vision(angle) == SE || vision(angle) == SW) * (((step + 1) * 64) - modulo(data->player.y, 64)))
+		- ((vision(angle) == NE || vision(angle) == NW) * ((step * 64) + modulo(data->player.y, 64)));
+	float next_x = data->player.x + (next_y - data->player.y) / tan(-angle);
+	float distance = get_distance(data->player.x, data->player.y, next_x, next_y);
+	if (collision(data, next_x, next_y))
+		return (distance);
+	return (-1);
+}
 
-// 	if ((data->player.angle < (PI / 2)) || (data->player.angle > (PI + (PI / 2)))) //regarde a droite
-// 	{
-// 		adj_x = - modulo(data->player.x, 64); printf("Bbbbbbbbbbbbbbbbbbbb\n");
-// 	}
-// 	else //  ((data->player.angle > (PI / 2)) && (data->player.angle < (2 * PI))) //regarde a gauche
-// 	{
-// 		adj_x = 64 - modulo(data->player.x, 64); printf("Aaaaaaaaaaaaaaaa\n");
+float	next_wall_v(t_global *data, float angle, int step)
+{
+	float next_x = data->player.x
+		+ ((vision(angle) == NE || vision(angle) == SE) * (((step + 1) * 64) - modulo(data->player.x, 64)))
+		- ((vision(angle) == NW || vision(angle) == SW) * ((step * 64) + modulo(data->player.x, 64)));
+	float next_y = data->player.y - tan(angle) * (next_x - data->player.x);
+	float distance = get_distance(data->player.x, data->player.y, next_x, next_y);
+	if (collision(data, next_x, next_y))
+		return (distance);
+	return (-1);
+}
 
-// 	}
-// 	// else
-// 	// 	return (1); //a voir
-// 	while (1)
-// 	{	
-// 		printf("adj = %f\n", adj_x);
-// 		distance = adj_x / cos(data->player.angle);
-// 		if (distance < 0)
-// 			distance = -distance;
-// 		printf("adj = %f hypotheus : %f\n", adj_x, distance);
-// 		col_x = data->player.x + adj_x;
-// 		if (data->player.angle > 0 && data->player.angle < PI)
-// 			col_y = data->player.y + (sqrt(pow(distance, 2) - pow(adj_x, 2))); 
-// 		else // else if (data->player.angle >= PI && data->player.angle <= PI*2)
-// 			col_y = data->player.y - (sqrt(pow(distance, 2) - pow(adj_x, 2)));
-// 		printf("%f %f\n", col_x, round(col_x));
-// 		if ((data->player.angle < (PI / 2)) || (data->player.angle > (PI + (PI / 2)))) //regarde a droite
-// 		{
-// 			if(data->map.map[(int)round(col_y)][(int)round(col_x) + 32] == '1')
-// 				break;
-// 		}
-// 		else if (data->player.angle > PI / 2 && data->player.angle < 2 * PI / 3) //regarde a gauche)
-// 		{
-// 			if(data->map.map[(int)round(col_y)][(int)round(col_x) - 32] == '1')
-// 				break;
-// 		}
-// 		if (data->player.angle < PI / 2 || data->player.angle > 2 * PI / 3) //regarde a droite
-// 			adj_x += 64;
-// 		else
-// 			adj_x -= 64;
-// 	}
-// 	for (float i = 0; i < distance; i += 0.1f)
-// 		put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(data->player.angle) * i),
-// 						row2 + data->player.y - (sin(data->player.angle)* i), 0xFFC0CB);
-// 	return (0);
-// }
+float distance_final(t_global *data, float angle, float x, float y)
+{
+	(void)data;
+	(void)angle;
+	if (x == -1 && y != -1)
+		return (/*print_line(data, y, angle, RED),*/ y);
+	if (x != -1 && y == -1)
+		return (/*print_line(data, x, angle, GREEN),*/ x);
+	if (x < y)
+		return (/*print_line(data, x, angle, GREEN),*/ x);
+	return (/*print_line(data, y, angle, RED),*/ y);
+}
+
+void ft_raying(t_global *data, float ray, float distance, int pixel)
+{
+	(void)ray;
+	(void)data;
+	(void)distance;
+	// printf("pos : %d\n", (int)(ray / RAY));
+	for (int i = 0; i < HEIGHT; i++)
+		put_pixel_to_frame_buf(data, abs(WIDTH - pixel), i, RED);
+	// printf("pixel : %d\n", pixel);
+	// float proj = (WIDTH / 2) / tan(FOV / 2);
+	// printf("old dist : %f\n", distance);
+	// distance *= abs_f(cos(modulo(data->player.angle - ray, 2 * PI)));
+	// printf("dist : %f\n", distance);
+	float height = (TXT_SIZE * HEIGHT) / distance;
+	// printf("\nheight : %f\n, (EIGHT - ", abs_f(height));
+	// printf("height : %f\n", height);
+	for (int i = 0; i < height; i++)
+	{
+		put_pixel_to_frame_buf(data, abs(WIDTH - pixel), i + (HEIGHT - height) / 2, GREEN);
+		// printf("xD\n");
+	}
+	// print_line_down(data, abs_f(height), conv_rad(PI + PI / 2), RED);
+	// print_square(r, HEIGHT/2 - y, ray + (WIDTH / FOV) * ray, HEIGHT/2 + y)
+	//wall
+	//ceiling	
+}
+
+void ft_raycasting(t_global *data)
+{
+	float distance_x;
+	float distance_y;
+	float angle;
+	int p = 0;
+	printf("\n -- next --\n\n");
+	for (float fov = 0; fov < FOV + RAY; fov += RAY)
+	{
+		angle = data->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
+		for (int step = 0; 1; step++)
+		{
+			distance_x = next_wall_v(data, angle, step);//mur
+			if (distance_x >= 0)
+				break ;
+		}
+		for (int step = 0; 1; step++)
+		{
+			distance_y = next_wall_h(data, angle, step);//plafond
+			if (distance_y >= 0)
+				break ;
+		}
+		float distance = distance_final(data, angle, distance_x, distance_y);
+		ft_raying(data, fov, distance, p);
+		// print_line(data, distance, angle - (FOV * DEGREE), PINK);
+		p++;
+	}
+	// printf("\n\n");
+	put_cercle(data, data->player.x, data->player.y, YELLOW);
+	print_line(data, 50, data->player.angle, BLUE);
+}
 
 int	ft_screen(t_global *data)
 {
 	int		row;
 	int		col;
-	int		row2;
-	int		col2;
-
-	row2 = (720-(data->map.largeur *64)) /2 ;
-	col2 = (1080-(data->map.hauteur *64)) /2 ;
-	row = 0 ;
 	
-	col = 0;
-	while (data->map.map[row])
+	data->decalage_x = 0;// (WIDTH - (data->map.hauteur *64)) / 2 ;
+	data->decalage_y = 0;// (HEIGHT - (data->map.largeur *64)) / 2 ;
+	// printf("\tx : %.2f\t\ty : %.2f\n", data->player.x, data->player.y);
+	// // printf("angle conv: %.2f\nangle \t: %.2f\n", conv_rad(data->player.angle), data->player.angle);
+	// put_cercle(data, data->player.x, data->player.y, RED);
+	// for (int i = 0; i < 30; i++)
+	// 	put_pixel_to_frame_buf(data, data->decalage_x + data->player.x - (cos(-(data->player.angle)) * i),
+	// 					data->decalage_y + data->player.y - (sin(-(data->player.angle))* i), 0xFFC0CB);
+	ft_raycasting(data);
+	row = -1;
+	while (data->map.map[++row])
 	{
-		col = 0;
-		while (data->map.map[row][col])
+		col = -1;
+		while (data->map.map[row][++col])
 		{
-			// printf("%s\n", data->map.map[row]);
+			// if (row % 64 == 0 || col % 64 == 0)
+			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+			// 			 (data->decalage_y + row), 0x606060);
 			if (data->map.map[row][col] == '1')
-				put_pixel_to_frame_buf(data, (col2 + col),
-						 (row2 + row), 0x0000FF);
-			else if (data->map.map[row][col] == '0')
-				put_pixel_to_frame_buf(data, (col2 + col),
-						 (row2 + row), 0x000000);
-			else if (ft_strchr("EWNS", data->map.map[row][col]))
-				put_pixel_to_frame_buf(data, (col2 + col),
-						 (row2 + row), 0x000000);
-			else
-				put_pixel_to_frame_buf(data, (col2 + col),
-						 (row2 + row), 0x00FF00);
-			col++;
+				put_pixel_to_frame_buf(data, (data->decalage_x + col),
+						 (data->decalage_y + row), 0x0000FF);
+			// else if (data->map.map[row][col] == '0')
+			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+			// 			 (data->decalage_y + row), 0x000000);
+			// else if (ft_strchr("EWNS", data->map.map[row][col]))
+			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+			// 			 (data->decalage_y + row), 0x000000);
+			// else
+			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+			// 			 (data->decalage_y + row), 0x00FF00);
 		}
-		row++;
 	}
-	// put_pixel_to_frame_buf(data, col2 + data->player.x,
-	// 					 row2 + data->player.y, 0xFF0000);
-	printf("%f %f\n", data->player.x, data->player.y);
-	for (float i = 0; i < 2 * PI; i += 0.1f)
-		for (float j = 0 ; j < 10; j += 0.1f)
-			put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(i) * j),
-							row2 + data->player.y - (sin(i)* j), 0xFFC0CB);
-	for (int i = 0; i < 30; i++)
-		put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(data->player.angle) * i),
-						row2 + data->player.y - (sin(data->player.angle)* i), 0xFFC0CB);
-	ft_raycasting(data, col2, row2);
-	// ft_image_to_frame(data, data->player.img, data->player.row,
-	// 	data->player.col);
-	// ft_moves(data);
 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->mlx.frame_buf, 0, 0);
 	return (0);
 }
@@ -192,9 +255,9 @@ int	ft_screen(t_global *data)
 void	execution(t_global *data)
 {
 	(void)data;
-	for (int i = 0; data->parsing.e_map[i]; i++)
-		printf("%s\n", data->parsing.e_map[i]);
-	printf("x : %d y : %d\n", data->map.largeur, data->map.hauteur);
+	// for (int i = 0; data->parsing.e_map[i]; i++)
+	// 	printf("%s\n", data->parsing.e_map[i]);
+	// printf("x : %d y : %d\n", data->map.largeur, data->map.hauteur);
 	data->mlx.mlx = mlx_init();
 	if (!data->mlx.mlx)
 		ft_error(data->gc, "Mlx error");
@@ -228,7 +291,7 @@ void	parsing(t_global *data, char *path)
 	get_param_and_map(data, 0, 0, 0);
 	parsing_map(data);
 	are_params_correct(data);
-	puts("ok");
+	// puts("ok");
 	expand_map_size(data);	
 	return ;
 }
@@ -245,7 +308,7 @@ int	main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 	// parsing(&data, argv[1]);
-	parsing(&data, "/mnt/nfs/homes/aboudjel/Desktop/cub3D/gitcub3D/cube3d/test.cub");
+	parsing(&data, "test.cub");
 	execution(&data);
 	ft_free(data.gc);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/04 08:09:31 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/07 01:46:59 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,44 @@ OUTSIDE THE MAP"
 # define ERR_MISSING "ERROR: ONE OF THE PARAMETERS OR MORE IS MISSING"
 # define ERR_BEHIND "ERROR: ONLY WHITE SPACE IS ALLOW BEHIND THE MAP"
 
+# define BLUE 0x4400CC
+# define RED 0xEE1122
+# define PURPLE 0x31125A
+# define YELLOW 0xF7FB4B
+# define GREEN 0x388A73
+# define PINK 0xF4BBCC
+# define ORANGE 0xFF9738
+# define WHITE 0x000000
 
 # define PI 3.14159265
+# define TXT_SIZE 64
+# define DEGREE 0.0174532925
+# define WIDTH 1080
+# define HEIGHT 720
+# define FOV 60
+// distance par rayon FOV / WIDTH
+# define RAY 0.055555556
+// # define RAY 0.001851852
+
+typedef enum e_abs_direction
+{
+	N,
+	S,
+	E,
+	W,
+}	t_abs_direction;
+
+typedef struct s_ray
+{
+	float	distance;
+	float	x;
+	float	y;
+	float	x_v;
+	float	y_v;
+	float	x_h;
+	float	y_h;
+	
+}	t_ray;
 
 typedef enum e_parsing_types
 {
@@ -66,6 +102,14 @@ typedef enum e_parsing_types
 	F,
 	C,
 }	t_parsing_types;
+
+typedef enum e_direction
+{
+	NW,
+	NE,
+	SE,
+	SW,
+}	t_direction;
 
 typedef enum e_keycode {
 	UP = 119,
@@ -130,6 +174,8 @@ typedef struct s_global
 	t_parsing	parsing;
 	t_player	player;
 	t_map		map;
+	float		decalage_x;
+	float		decalage_y;
 }	t_global;
 
 /* ******************* PARSING ******************* */
@@ -197,6 +243,8 @@ void			ft_hooks(t_global *data);
 void			ft_moves(t_global *data);
 int				key_hook(int keycode, t_global *data);
 
-int ft_raycasting(t_global *data, int col2, int row2);
+// int ft_raycasting(t_global *data, int col2, int row2, int x);
+
+void put_cercle(t_global *data, int x, int y, int color);
 
 #endif
