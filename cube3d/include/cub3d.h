@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 01:46:59 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/07 04:16:33 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,24 +73,26 @@ OUTSIDE THE MAP"
 # define RAY 0.055555556
 // # define RAY 0.001851852
 
-typedef enum e_abs_direction
+typedef enum e_hit_side
 {
 	N,
 	S,
 	E,
 	W,
-}	t_abs_direction;
+}	t_hit_side;
 
 typedef struct s_ray
 {
-	float	distance;
-	float	x;
-	float	y;
-	float	x_v;
-	float	y_v;
-	float	x_h;
-	float	y_h;
-	
+	float			distance;
+	float			x;
+	float			y;
+	float			x_v;
+	float			y_v;
+	float			x_h;
+	float			y_h;
+	t_hit_side		hit;
+	int				num;
+	float			angle;
 }	t_ray;
 
 typedef enum e_parsing_types

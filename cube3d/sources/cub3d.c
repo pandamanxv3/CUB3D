@@ -6,11 +6,16 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 01:47:50 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/07 04:37:58 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+unsigned int rgb_to_int(unsigned int r, unsigned int g, unsigned int b)
+{
+    return ((r * 256*256) + (g * 256) + b);
+}
 
 float modulo(float value, float mod_value)
 {
@@ -58,20 +63,20 @@ void	print_square(t_global *data, float x1, float y1, float x2, float y2)
 	int	i;
 	int	j;
 
-	printf("x1:%f \t y1:%f\n", x1, y1);
-	printf("x2:%f \t y2:%f\n", x2, y2);
+	// printf("x1:%f \t y1:%f\n", x1, y1);
+	// printf("x2:%f \t y2:%f\n", x2, y2);
 	i = (x1 < x2) * x1 + (!(x1 < x2)) * x2;
 	while (i < abs_f(x1 - x2))
 	{
 		j = (y1 < y2) * y1 + (!(y1 < y2)) * y2;
 		while (j < abs_f(y1 - y2))
 		{
-			printf("printing\n");
+			// printf("printing\n");
 			put_pixel_to_frame_buf(data, data->decalage_x + i,
 						data->decalage_y + j, GREEN);
 			put_cercle(data, data->decalage_x + i,
 						data->decalage_y + j, GREEN);
-			printf("x2:%f \t y2:%f\n", x2, y2);
+			// printf("x2:%f \t y2:%f\n", x2, y2);
 			j++;
 		}
 		i++;
@@ -115,98 +120,115 @@ int	collision(t_global *data, int coord_x, int coord_y)
 	return (0);
 }
 
-float	next_wall_h(t_global *data, float angle, int step)
+float	next_wall_h(t_global *data, t_ray *ray, int step)
 {
-	float next_y = data->player.y
-		+ ((vision(angle) == SE || vision(angle) == SW) * (((step + 1) * 64) - modulo(data->player.y, 64)))
-		- ((vision(angle) == NE || vision(angle) == NW) * ((step * 64) + modulo(data->player.y, 64)));
-	float next_x = data->player.x + (next_y - data->player.y) / tan(-angle);
-	float distance = get_distance(data->player.x, data->player.y, next_x, next_y);
-	if (collision(data, next_x, next_y))
-		return (distance);
+	ray->y_h = data->player.y
+		+ ((vision(ray->angle) == SE || vision(ray->angle) == SW) * (((step + 1) * 64) - modulo(data->player.y, 64)))
+		- ((vision(ray->angle) == NE || vision(ray->angle) == NW) * ((step * 64) + modulo(data->player.y, 64)));
+	ray->x_h = data->player.x + (ray->y_h - data->player.y) / tan(-ray->angle);
+	if (collision(data, ray->x_h, ray->y_h))
+		return (get_distance(data->player.x, data->player.y, ray->x_h, ray->y_h));
 	return (-1);
 }
 
-float	next_wall_v(t_global *data, float angle, int step)
+float	next_wall_v(t_global *data, t_ray *ray, int step)
 {
-	float next_x = data->player.x
-		+ ((vision(angle) == NE || vision(angle) == SE) * (((step + 1) * 64) - modulo(data->player.x, 64)))
-		- ((vision(angle) == NW || vision(angle) == SW) * ((step * 64) + modulo(data->player.x, 64)));
-	float next_y = data->player.y - tan(angle) * (next_x - data->player.x);
-	float distance = get_distance(data->player.x, data->player.y, next_x, next_y);
-	if (collision(data, next_x, next_y))
-		return (distance);
+	ray->x_v = data->player.x
+		+ ((vision(ray->angle) == NE || vision(ray->angle) == SE) * (((step + 1) * 64) - modulo(data->player.x, 64)))
+		- ((vision(ray->angle) == NW || vision(ray->angle) == SW) * ((step * 64) + modulo(data->player.x, 64)));
+	ray->y_v = data->player.y - tan(ray->angle) * (ray->x_v - data->player.x);
+	if (collision(data, ray->x_v, ray->y_v))
+		return (get_distance(data->player.x, data->player.y, ray->x_v, ray->y_v));
 	return (-1);
 }
 
-float distance_final(t_global *data, float angle, float x, float y)
+void distance_final(t_ray *ray, float vert, float horiz)
 {
-	(void)data;
-	(void)angle;
-	if (x == -1 && y != -1)
-		return (/*print_line(data, y, angle, RED),*/ y);
-	if (x != -1 && y == -1)
-		return (/*print_line(data, x, angle, GREEN),*/ x);
-	if (x < y)
-		return (/*print_line(data, x, angle, GREEN),*/ x);
-	return (/*print_line(data, y, angle, RED),*/ y);
+	if (vert == -1 && horiz != -1)
+		ray->distance = horiz;
+	else if (vert != -1 && horiz == -1)
+		ray->distance = vert;
+	else if (vert < horiz)
+		ray->distance = vert;
+	else
+		ray->distance = horiz;
 }
 
-void ft_raying(t_global *data, float ray, float distance, int pixel)
+void ft_raying(t_global *data, t_ray *ray)
 {
-	(void)ray;
-	(void)data;
-	(void)distance;
-	// printf("pos : %d\n", (int)(ray / RAY));
+	/* Plafond */
+
+	/* Mur */
+
+	/* Sol */
 	for (int i = 0; i < HEIGHT; i++)
-		put_pixel_to_frame_buf(data, abs(WIDTH - pixel), i, RED);
-	// printf("pixel : %d\n", pixel);
-	// float proj = (WIDTH / 2) / tan(FOV / 2);
-	// printf("old dist : %f\n", distance);
-	// distance *= abs_f(cos(modulo(data->player.angle - ray, 2 * PI)));
-	// printf("dist : %f\n", distance);
-	float height = (TXT_SIZE * HEIGHT) / distance;
-	// printf("\nheight : %f\n, (EIGHT - ", abs_f(height));
+		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, ORANGE);
+	float height = (HEIGHT) / ray->distance;
+	if (height >= HEIGHT)
+		height = HEIGHT;
 	// printf("height : %f\n", height);
+	// printf("x : %d\ty[0] : %f\ty[-1] : %f\n", abs(WIDTH - ray->num), (HEIGHT - height) / 2, height + (HEIGHT - height) / 2);
 	for (int i = 0; i < height; i++)
 	{
-		put_pixel_to_frame_buf(data, abs(WIDTH - pixel), i + (HEIGHT - height) / 2, GREEN);
+		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i + (HEIGHT - height) / 2, GREEN);
 		// printf("xD\n");
 	}
-	// print_line_down(data, abs_f(height), conv_rad(PI + PI / 2), RED);
-	// print_square(r, HEIGHT/2 - y, ray + (WIDTH / FOV) * ray, HEIGHT/2 + y)
 	//wall
 	//ceiling	
 }
 
 void ft_raycasting(t_global *data)
 {
+	t_ray ray;
 	float distance_x;
 	float distance_y;
-	float angle;
-	int p = 0;
-	printf("\n -- next --\n\n");
+
+	ray.num = 0;
+	printf("player angle : %f\n", data->player.angle);
 	for (float fov = 0; fov < FOV + RAY; fov += RAY)
 	{
-		angle = data->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
+		ray.angle = data->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
 		for (int step = 0; 1; step++)
 		{
-			distance_x = next_wall_v(data, angle, step);//mur
+			distance_x = next_wall_v(data, &ray, step);//mur
 			if (distance_x >= 0)
 				break ;
 		}
 		for (int step = 0; 1; step++)
 		{
-			distance_y = next_wall_h(data, angle, step);//plafond
+			distance_y = next_wall_h(data, &ray, step);//plafond
 			if (distance_y >= 0)
 				break ;
 		}
-		float distance = distance_final(data, angle, distance_x, distance_y);
-		ft_raying(data, fov, distance, p);
-		// print_line(data, distance, angle - (FOV * DEGREE), PINK);
-		p++;
+		distance_final(&ray, distance_x, distance_y);
+		ft_raying(data, &ray);
+		printf("degree : %f\n", ray.angle);
+		ray.num++;
 	}
-	// printf("\n\n");
+	
+	/*	Voir la vue du perso	
+	// ray.num = 0;
+	// for (float fov = 0; fov < FOV + RAY; fov += RAY)
+	// {
+	// 	ray.angle = data->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
+	// 	for (int step = 0; 1; step++)
+	// 	{
+	// 		distance_x = next_wall_v(data, &ray, step);//mur
+	// 		if (distance_x >= 0)
+	// 			break ;
+	// 	}
+	// 	for (int step = 0; 1; step++)
+	// 	{
+	// 		distance_y = next_wall_h(data, &ray, step);//plafond
+	// 		if (distance_y >= 0)
+	// 			break ;
+	// 	}
+	// 	distance_final(&ray, distance_x, distance_y);
+	// 	print_line(data, ray.distance, ray.angle, PINK);
+	// 	ray.num++;
+	// }
+	*/
+
 	put_cercle(data, data->player.x, data->player.y, YELLOW);
 	print_line(data, 50, data->player.angle, BLUE);
 }
@@ -236,7 +258,7 @@ int	ft_screen(t_global *data)
 			// 			 (data->decalage_y + row), 0x606060);
 			if (data->map.map[row][col] == '1')
 				put_pixel_to_frame_buf(data, (data->decalage_x + col),
-						 (data->decalage_y + row), 0x0000FF);
+						 (data->decalage_y + row), BLUE);
 			// else if (data->map.map[row][col] == '0')
 			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
 			// 			 (data->decalage_y + row), 0x000000);
