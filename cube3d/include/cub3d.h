@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 04:16:33 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/07 06:30:19 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ OUTSIDE THE MAP"
 // distance par rayon FOV / WIDTH
 # define RAY 0.055555556
 // # define RAY 0.001851852
+# define SPEED 10
 
 typedef enum e_hit_side
 {
@@ -93,6 +94,7 @@ typedef struct s_ray
 	t_hit_side		hit;
 	int				num;
 	float			angle;
+	float			fov;
 }	t_ray;
 
 typedef enum e_parsing_types
@@ -144,12 +146,12 @@ typedef struct s_player
 
 typedef struct s_map
 {
-	int		hauteur;
-	int		largeur;
-	char	**map;
-	int		*floor_color;
-	int		*ceiling_color;
-	char	*wall_path[4];
+	int				hauteur;
+	int				largeur;
+	char			**map;
+	unsigned int	floor_color;
+	unsigned int	ceiling_color;
+	char			*wall_path[4];
 }	t_map;
 
 
@@ -212,7 +214,7 @@ void	parsing_map(t_global *data);
 
 int		is_file_xpm(t_global *data);
 int		is_texture_unique(t_global *data);
-int		*is_color_correct(t_global *data, int to_color, int i, int count);
+unsigned int	is_color_correct(t_global *data, int to_color, int i, int count);
 void	are_params_correct(t_global *data);
 
 /* -------------------- utils -------------------- */
@@ -247,6 +249,7 @@ int				key_hook(int keycode, t_global *data);
 
 // int ft_raycasting(t_global *data, int col2, int row2, int x);
 
-void put_cercle(t_global *data, int x, int y, int color);
+void 			put_cercle(t_global *data, int x, int y, int color);
+unsigned int	rgb_to_int(unsigned int r, unsigned int g, unsigned int b);
 
 #endif

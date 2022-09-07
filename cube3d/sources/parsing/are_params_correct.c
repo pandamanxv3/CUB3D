@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   are_params_correct.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:23:07 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/02 10:07:55 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/07 05:11:33 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ static int	ft_atoi_remixed(char *str)
 	return (nb);
 }
 
-int	*is_color_correct(t_global *g, int to_color, int i, int count)
+unsigned int	is_color_correct(t_global *g, int to_color, int i, int count)
 {
 	char	**tab;
-	int		*color;
 
 	while (g->parsing.str_parsing[to_color][++i])
 		if (g->parsing.str_parsing[to_color][i] == ',')
@@ -81,21 +80,20 @@ int	*is_color_correct(t_global *g, int to_color, int i, int count)
 		i++;
 	if (i != 3)
 		ft_error(g->gc, ERR_COLOR);
-	color = ft_malloc("int", 3, ERR_MALL, g->gc);
 	i = 0;
 	while (i < 3)
 	{
-		color[i] = ft_atoi_remixed(tab[i]);
-		if (color[i++] == -1)
+		if (ft_atoi_remixed(tab[i++]) == -1)
 			ft_error(g->gc, ERR_COLOR);
 	}
-	return (color);
+	return (rgb_to_int(ft_atoi_remixed(tab[0]), ft_atoi_remixed(tab[1]), ft_atoi_remixed(tab[2])));
 }
 
 void	are_params_correct(t_global *data)
 {
 	data->map.ceiling_color = is_color_correct(data, C, -1, 0);
 	data->map.floor_color = is_color_correct(data, F, -1, 0);
+	printf("plafond : %d, sol : %d\n", data->map.ceiling_color, data->map.floor_color);
 	if (!is_texture_unique(data))
 		ft_error(data->gc, ERR_TWICE);
 	if (!is_file_xpm(data))

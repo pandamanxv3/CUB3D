@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 04:37:58 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/07 05:54:50 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,25 +156,19 @@ void distance_final(t_ray *ray, float vert, float horiz)
 
 void ft_raying(t_global *data, t_ray *ray)
 {
-	/* Plafond */
-
 	/* Mur */
-
-	/* Sol */
-	for (int i = 0; i < HEIGHT; i++)
-		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, ORANGE);
-	float height = (HEIGHT) / ray->distance;
+	float height = (HEIGHT) / ray->distance * TXT_SIZE;
 	if (height >= HEIGHT)
 		height = HEIGHT;
-	// printf("height : %f\n", height);
-	// printf("x : %d\ty[0] : %f\ty[-1] : %f\n", abs(WIDTH - ray->num), (HEIGHT - height) / 2, height + (HEIGHT - height) / 2);
-	for (int i = 0; i < height; i++)
-	{
-		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i + (HEIGHT - height) / 2, GREEN);
-		// printf("xD\n");
-	}
-	//wall
-	//ceiling	
+	float sol = (HEIGHT - height) / 2;
+	for (int i = sol; i < sol + height; i++)
+		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, RED);
+	/* Plafond */
+	for (int i = 0; i < sol; i++)
+		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, data->map.ceiling_color);
+	/* Sol */
+	for (int i = sol + height; i < HEIGHT; i++)
+		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, GREEN);
 }
 
 void ft_raycasting(t_global *data)
@@ -184,10 +178,11 @@ void ft_raycasting(t_global *data)
 	float distance_y;
 
 	ray.num = 0;
-	printf("player angle : %f\n", data->player.angle);
-	for (float fov = 0; fov < FOV + RAY; fov += RAY)
+	ray.fov = 0;
+	// printf("player angle : %f\n", data->player.angle);
+	for (ray.fov = 0; ray.fov < FOV + RAY; ray.fov += RAY)
 	{
-		ray.angle = data->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
+		ray.angle = data->player.angle + ray.fov * DEGREE - (FOV * DEGREE) / 2;
 		for (int step = 0; 1; step++)
 		{
 			distance_x = next_wall_v(data, &ray, step);//mur
@@ -202,7 +197,7 @@ void ft_raycasting(t_global *data)
 		}
 		distance_final(&ray, distance_x, distance_y);
 		ft_raying(data, &ray);
-		printf("degree : %f\n", ray.angle);
+		// printf("degree : %f\n", ray.angle);
 		ray.num++;
 	}
 	
@@ -229,14 +224,14 @@ void ft_raycasting(t_global *data)
 	// }
 	*/
 
-	put_cercle(data, data->player.x, data->player.y, YELLOW);
-	print_line(data, 50, data->player.angle, BLUE);
+	// put_cercle(data, data->player.x, data->player.y, YELLOW);
+	// print_line(data, 50, data->player.angle, BLUE);
 }
 
 int	ft_screen(t_global *data)
 {
-	int		row;
-	int		col;
+	// int		row;
+	// int		col;
 	
 	data->decalage_x = 0;// (WIDTH - (data->map.hauteur *64)) / 2 ;
 	data->decalage_y = 0;// (HEIGHT - (data->map.largeur *64)) / 2 ;
@@ -247,29 +242,29 @@ int	ft_screen(t_global *data)
 	// 	put_pixel_to_frame_buf(data, data->decalage_x + data->player.x - (cos(-(data->player.angle)) * i),
 	// 					data->decalage_y + data->player.y - (sin(-(data->player.angle))* i), 0xFFC0CB);
 	ft_raycasting(data);
-	row = -1;
-	while (data->map.map[++row])
-	{
-		col = -1;
-		while (data->map.map[row][++col])
-		{
-			// if (row % 64 == 0 || col % 64 == 0)
-			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-			// 			 (data->decalage_y + row), 0x606060);
-			if (data->map.map[row][col] == '1')
-				put_pixel_to_frame_buf(data, (data->decalage_x + col),
-						 (data->decalage_y + row), BLUE);
-			// else if (data->map.map[row][col] == '0')
-			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-			// 			 (data->decalage_y + row), 0x000000);
-			// else if (ft_strchr("EWNS", data->map.map[row][col]))
-			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-			// 			 (data->decalage_y + row), 0x000000);
-			// else
-			// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-			// 			 (data->decalage_y + row), 0x00FF00);
-		}
-	}
+	// row = -1;
+	// while (data->map.map[++row])
+	// {
+	// 	col = -1;
+	// 	while (data->map.map[row][++col])
+	// 	{
+	// 		// if (row % 64 == 0 || col % 64 == 0)
+	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+	// 		// 			 (data->decalage_y + row), 0x606060);
+	// 		if (data->map.map[row][col] == '1')
+	// 			put_pixel_to_frame_buf(data, (data->decalage_x + col),
+	// 					 (data->decalage_y + row), BLUE);
+	// 		// else if (data->map.map[row][col] == '0')
+	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+	// 		// 			 (data->decalage_y + row), 0x000000);
+	// 		// else if (ft_strchr("EWNS", data->map.map[row][col]))
+	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+	// 		// 			 (data->decalage_y + row), 0x000000);
+	// 		// else
+	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
+	// 		// 			 (data->decalage_y + row), 0x00FF00);
+	// 	}
+	// }
 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->mlx.frame_buf, 0, 0);
 	return (0);
 }

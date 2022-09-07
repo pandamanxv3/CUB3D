@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 06:20:13 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/07 06:30:03 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void	move_angle(t_global *data, enum e_keycode direction)
 {
 	if (direction == LEFT)
 	{
-		data->player.angle += DEGREE;
+		data->player.angle += 3 * DEGREE;
 		data->player.angle = modulo(data->player.angle, 2 * PI);
 	}
 	else if (direction == RIGHT)
 	{
-		data->player.angle -= DEGREE;
+		data->player.angle -= 3* DEGREE;
 		data->player.angle = modulo(data->player.angle, 2 * PI);
 	}
 } 
@@ -61,20 +61,20 @@ int	key_hook(int keycode, t_global *data)
 	if (keycode == ESCAPE)
 		ft_useless(data);
 	if (keycode == UP)
-		move_pos(data, 5, -1);
+		move_pos(data, SPEED, -1);
 	if (keycode == DOWN)
-		move_pos(data, 5, 1);
+		move_pos(data, SPEED, 1);
 	if (keycode == LEFT)
 	{
 		move_angle(data, LEFT);
-		data->player.next_x = data->player.x - (cos(-data->player.angle) * 5);
-		data->player.next_Y = data->player.y - (sin(-data->player.angle) * 5);
+		data->player.next_x = data->player.x - (cos(-data->player.angle) * SPEED);
+		data->player.next_Y = data->player.y - (sin(-data->player.angle) * SPEED);
 	}
 	if (keycode == RIGHT)
 	{
 		move_angle(data, RIGHT);
-		data->player.next_x = data->player.x - (cos(-data->player.angle) * 5);
-		data->player.next_Y = data->player.y - (sin(-data->player.angle) * 5);
+		data->player.next_x = data->player.x - (cos(-data->player.angle) * SPEED);
+		data->player.next_Y = data->player.y - (sin(-data->player.angle) * SPEED);
 	}
 	mlx_clear_window(data->mlx.mlx, data->mlx.win);
 	ft_screen(data);
