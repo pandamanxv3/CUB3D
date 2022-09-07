@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 02:29:42 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/06 03:07:16 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 03:45:12 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,4 @@ void	ft_raycasting(t_global *data)
 			set_ray(&data->ray[i], data->ray[i].ray_ver);
 		i++;
 	}
-	print_pov(data);
 }

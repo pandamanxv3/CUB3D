@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 02:28:19 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/06 02:32:13 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/07 01:49:46 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ int	ft_screen(t_global *data)
 	int		row2;
 	int		col2;
 
-	row2 = (720-(data->map.largeur *64)) /2 ;
-	col2 = (1080-(data->map.hauteur *64)) /2 ;
+	// row2 = (720-(data->map.largeur *64)) /2 ;
+	row2 = 0;
+	// col2 = (1080-(data->map.hauteur *64)) /2 ;
+	col2 = 0;
 	data->decalage_x = col2;
 	data->decalage_y = row2;
 	row = 0 ;
@@ -101,7 +103,7 @@ int	ft_screen(t_global *data)
 			put_pixel_to_frame_buf(data, col2 + data->player.x - (cos(i) * j),
 							row2 + data->player.y - (sin(i)* j), 0xFFC0CB);
 	ft_raycasting(data);
-	
+	print_pov(data);
 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->mlx.frame_buf, 0, 0);
 	return (0);
 }

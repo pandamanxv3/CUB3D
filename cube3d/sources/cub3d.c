@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/06 02:48:02 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/07 04:10:39 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ void	execution(t_global *data)
 	ft_gcadd_back(data->gc, ft_gcnew(data->mlx.frame_buf, data->gc));
 	data->mlx.addr = mlx_get_data_addr(data->mlx.frame_buf, &data->mlx.bits_per_pixel,
 			&data->mlx.line_length, &data->mlx.endian);
-	ft_screen(data);
+	ft_3D(data);
+	// ft_screen(data);
+	
 	ft_hooks(data);
 	mlx_loop(data->mlx.mlx);
 	return ;

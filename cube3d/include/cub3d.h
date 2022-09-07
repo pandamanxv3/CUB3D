@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/06 03:04:49 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 04:56:15 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ OUTSIDE THE MAP"
 # define PINK 0xF4BBCC
 # define ORANGE 0xFF9738
 # define WHITE 0x000000
-
+# define HEIGHT 720
+# define WIDTH  1080
 # define FOV 60
 # define DEGREE 0.0174532925
 # define PI 3.14159265
@@ -161,6 +162,8 @@ typedef struct s_global
 	t_player	player;
 	t_map		map;
 	t_ray		ray[FOV];
+	float		ray_line[FOV];
+	float		ray_offset[FOV];
 	int			decalage_x;
 	int			decalage_y;
 }	t_global;
@@ -258,5 +261,10 @@ void		set_ray(t_ray *to_set, t_subray to_copy);
 
 float 			modulo(float value, float mod_value);
 float 			conv_rad(float angle);
+
+/* ----------------- raycasting utils------------------ */
+
+void	ft_3D(t_global *data);
+void	Print_HeightLines(t_global *data, int i);
 
 #endif

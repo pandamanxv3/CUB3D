@@ -6,7 +6,7 @@
 #    By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/03 04:38:46 by aboudjel          #+#    #+#              #
-#    Updated: 2022/09/06 03:00:06 by aboudjel         ###   ########.fr        #
+#    Updated: 2022/09/06 03:48:04 by aboudjel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ C_FILES =	sources/cub3d.c  \
 			sources/parsing/get_file.c sources/parsing/expand_map_size.c \
 			sources/exec/get_pixel.c sources/exec/print_utils.c\
 			sources/exec/hook.c sources/exec/hook_utils.c \
-			sources/exec/raycasting.c sources/exec/raycasting_utils.c
+			sources/exec/raycasting.c sources/exec/raycasting_utils.c \
+			sources/exec/ft_3D.c
 
 			
 CC = cc

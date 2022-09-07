@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 02:26:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/06 02:46:39 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/06 05:53:43 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_action(t_global *data, int row, int col)
 
 int myKeyReleaseFunc(int keycode, t_global *data)
 {
-	printf("release == %d\n", keycode);
+	// printf("release == %d\n", keycode);
     if (data->last_input == keycode)
 	{
 		if (data->pre_last_input == 0)
