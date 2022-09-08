@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 06:30:19 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/08 01:52:16 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,22 @@ OUTSIDE THE MAP"
 # define GREEN 0x388A73
 # define PINK 0xF4BBCC
 # define ORANGE 0xFF9738
-# define WHITE 0x000000
+# define WHITE 0xFFFFFF
+# define BLACK 0x000000
+
+// mlx_get_screen_size pour recuperer la taille de l'ecran
+# define WIDTH 1080
+# define HEIGHT 720
 
 # define PI 3.14159265
 # define TXT_SIZE 64
 # define DEGREE 0.0174532925
-# define WIDTH 1080
-# define HEIGHT 720
-# define FOV 60
-// distance par rayon FOV / WIDTH
-# define RAY 0.055555556
-// # define RAY 0.001851852
 # define SPEED 10
+# define FOV 60
+// RAY = FOV / WIDTH : il s'agit de l'ecart entre 2 rayons
+# define RAY 0.055555556
+
+
 
 typedef enum e_hit_side
 {

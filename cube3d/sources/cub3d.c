@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 05:54:50 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/08 03:01:47 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,40 +50,6 @@ void	print_line(t_global *data, float distance, float angle, float color)
 						data->decalage_y + data->player.y + (sin(angle) * i), color);
 }
 
-
-// void	print_line_down(t_global *data, float distance)
-// {
-// 	for (int i = 0; i < distance; i++)
-// 		put_pixel_to_frame_buf(data, data->decalage_x + data->player.x - (cos(angle) * i),
-// 						data->decalage_y + data->player.y + (sin(angle) * i), color);
-// }
-
-void	print_square(t_global *data, float x1, float y1, float x2, float y2)
-{
-	int	i;
-	int	j;
-
-	// printf("x1:%f \t y1:%f\n", x1, y1);
-	// printf("x2:%f \t y2:%f\n", x2, y2);
-	i = (x1 < x2) * x1 + (!(x1 < x2)) * x2;
-	while (i < abs_f(x1 - x2))
-	{
-		j = (y1 < y2) * y1 + (!(y1 < y2)) * y2;
-		while (j < abs_f(y1 - y2))
-		{
-			// printf("printing\n");
-			put_pixel_to_frame_buf(data, data->decalage_x + i,
-						data->decalage_y + j, GREEN);
-			put_cercle(data, data->decalage_x + i,
-						data->decalage_y + j, GREEN);
-			// printf("x2:%f \t y2:%f\n", x2, y2);
-			j++;
-		}
-		i++;
-	}
-}
-
-
 int vision(float angle)
 {
 	angle = conv_rad(angle);
@@ -122,24 +88,30 @@ int	collision(t_global *data, int coord_x, int coord_y)
 
 float	next_wall_h(t_global *data, t_ray *ray, int step)
 {
-	ray->y_h = data->player.y
+	float	x;
+	float	y;
+
+	y = data->player.y
 		+ ((vision(ray->angle) == SE || vision(ray->angle) == SW) * (((step + 1) * 64) - modulo(data->player.y, 64)))
 		- ((vision(ray->angle) == NE || vision(ray->angle) == NW) * ((step * 64) + modulo(data->player.y, 64)));
-	ray->x_h = data->player.x + (ray->y_h - data->player.y) / tan(-ray->angle);
-	if (collision(data, ray->x_h, ray->y_h))
-		return (get_distance(data->player.x, data->player.y, ray->x_h, ray->y_h));
-	return (-1);
+	x = data->player.x + (y - data->player.y) / tan(-ray->angle);
+	if (collision(data, x, y) || step > 50)
+		return (get_distance(data->player.x, data->player.y, x, y));
+	return (next_wall_h(data, ray, step + 1));
 }
 
 float	next_wall_v(t_global *data, t_ray *ray, int step)
 {
-	ray->x_v = data->player.x
+	float	x;
+	float	y;
+
+	x = data->player.x
 		+ ((vision(ray->angle) == NE || vision(ray->angle) == SE) * (((step + 1) * 64) - modulo(data->player.x, 64)))
 		- ((vision(ray->angle) == NW || vision(ray->angle) == SW) * ((step * 64) + modulo(data->player.x, 64)));
-	ray->y_v = data->player.y - tan(ray->angle) * (ray->x_v - data->player.x);
-	if (collision(data, ray->x_v, ray->y_v))
-		return (get_distance(data->player.x, data->player.y, ray->x_v, ray->y_v));
-	return (-1);
+	y = data->player.y - tan(ray->angle) * (x - data->player.x);
+	if (collision(data, x, y) || step > 50)
+		return (get_distance(data->player.x, data->player.y, x, y));
+	return (next_wall_v(data, ray, step + 1));
 }
 
 void distance_final(t_ray *ray, float vert, float horiz)
@@ -152,129 +124,123 @@ void distance_final(t_ray *ray, float vert, float horiz)
 		ray->distance = vert;
 	else
 		ray->distance = horiz;
+	if ((vision(ray->angle) == NE || vision(ray->angle) == SE) && ray->distance == vert)
+		ray->hit = E;
+	else if ((vision(ray->angle) == NW || vision(ray->angle) == SW) && ray->distance == vert)
+		ray->hit = W;
+	else if ((vision(ray->angle) == NE || vision(ray->angle) == NW) && ray->distance == horiz)
+		ray->hit = N;
+	else
+		ray->hit = S;
+	return ;
 }
 
 void ft_raying(t_global *data, t_ray *ray)
 {
+	/* color depending on the side */
+	int color;
+	if (ray->hit == N)
+		color = YELLOW;
+	else if (ray->hit == E)
+		color = WHITE;
+	else if (ray->hit == S)
+		color = ORANGE;
+	else
+		color = RED;
 	/* Mur */
-	float height = (HEIGHT) / ray->distance * TXT_SIZE;
+	float fix = modulo(data->player.angle - ray->angle, 2 * PI);
+	float height = HEIGHT / ray->distance * TXT_SIZE / cos(fix);
 	if (height >= HEIGHT)
 		height = HEIGHT;
+	else if (height < 0)
+		height = 0;
 	float sol = (HEIGHT - height) / 2;
 	for (int i = sol; i < sol + height; i++)
-		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, RED);
+		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, color);
 	/* Plafond */
 	for (int i = 0; i < sol; i++)
 		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, data->map.ceiling_color);
 	/* Sol */
 	for (int i = sol + height; i < HEIGHT; i++)
-		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, GREEN);
+		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, data->map.floor_color);
 }
 
 void ft_raycasting(t_global *data)
 {
 	t_ray ray;
-	float distance_x;
-	float distance_y;
 
 	ray.num = 0;
 	ray.fov = 0;
-	// printf("player angle : %f\n", data->player.angle);
-	for (ray.fov = 0; ray.fov < FOV + RAY; ray.fov += RAY)
+	while (ray.num < WIDTH)
 	{
 		ray.angle = data->player.angle + ray.fov * DEGREE - (FOV * DEGREE) / 2;
-		for (int step = 0; 1; step++)
-		{
-			distance_x = next_wall_v(data, &ray, step);//mur
-			if (distance_x >= 0)
-				break ;
-		}
-		for (int step = 0; 1; step++)
-		{
-			distance_y = next_wall_h(data, &ray, step);//plafond
-			if (distance_y >= 0)
-				break ;
-		}
-		distance_final(&ray, distance_x, distance_y);
+		distance_final(&ray, next_wall_v(data, &ray, 0), next_wall_h(data, &ray, 0)); //distance du mur
 		ft_raying(data, &ray);
-		// printf("degree : %f\n", ray.angle);
+		ray.num++;
+		ray.fov += RAY;
+	}
+}
+
+void ft_minimap(t_global *data)
+{
+	int		row;
+	int		col;
+	t_ray	ray;
+
+	/*	Voir la vue du perso	*/
+	row = -1;
+	while (data->map.map[++row])
+	{
+		col = -1;
+		while (data->map.map[row][++col])
+		{
+			if (row % 64 == 0 || col % 64 == 0)
+				put_pixel_to_frame_buf(data, (data->decalage_x + col),
+						 (data->decalage_y + row), 0x606060);
+			if (data->map.map[row][col] == '1')
+				put_pixel_to_frame_buf(data, (data->decalage_x + col),
+						 (data->decalage_y + row), BLUE);
+			else if (data->map.map[row][col] == '0')
+				put_pixel_to_frame_buf(data, (data->decalage_x + col),
+						 (data->decalage_y + row), 0x000000);
+			else if (ft_strchr("EWNS", data->map.map[row][col]))
+				put_pixel_to_frame_buf(data, (data->decalage_x + col),
+						 (data->decalage_y + row), 0x000000);
+			else
+				put_pixel_to_frame_buf(data, (data->decalage_x + col),
+						 (data->decalage_y + row), 0x00FF00);
+		}
+	}
+	/*	Voir la vue du perso	*/
+	ray.num = 0;
+	for (float fov = 0; fov < FOV + RAY; fov += RAY)
+	{
+		ray.angle = data->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
+		distance_final(&ray, next_wall_v(data, &ray, 0), next_wall_h(data, &ray, 0));
+		print_line(data, ray.distance, ray.angle, PINK);
 		ray.num++;
 	}
-	
-	/*	Voir la vue du perso	
-	// ray.num = 0;
-	// for (float fov = 0; fov < FOV + RAY; fov += RAY)
-	// {
-	// 	ray.angle = data->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
-	// 	for (int step = 0; 1; step++)
-	// 	{
-	// 		distance_x = next_wall_v(data, &ray, step);//mur
-	// 		if (distance_x >= 0)
-	// 			break ;
-	// 	}
-	// 	for (int step = 0; 1; step++)
-	// 	{
-	// 		distance_y = next_wall_h(data, &ray, step);//plafond
-	// 		if (distance_y >= 0)
-	// 			break ;
-	// 	}
-	// 	distance_final(&ray, distance_x, distance_y);
-	// 	print_line(data, ray.distance, ray.angle, PINK);
-	// 	ray.num++;
-	// }
-	*/
+	// Fin vue perso
+}
 
-	// put_cercle(data, data->player.x, data->player.y, YELLOW);
-	// print_line(data, 50, data->player.angle, BLUE);
+void	ft_crosshair(t_global *data)
+{
+	put_cercle(data, WIDTH / 2, HEIGHT / 2, BLACK);
 }
 
 int	ft_screen(t_global *data)
 {
-	// int		row;
-	// int		col;
-	
-	data->decalage_x = 0;// (WIDTH - (data->map.hauteur *64)) / 2 ;
-	data->decalage_y = 0;// (HEIGHT - (data->map.largeur *64)) / 2 ;
-	// printf("\tx : %.2f\t\ty : %.2f\n", data->player.x, data->player.y);
-	// // printf("angle conv: %.2f\nangle \t: %.2f\n", conv_rad(data->player.angle), data->player.angle);
-	// put_cercle(data, data->player.x, data->player.y, RED);
-	// for (int i = 0; i < 30; i++)
-	// 	put_pixel_to_frame_buf(data, data->decalage_x + data->player.x - (cos(-(data->player.angle)) * i),
-	// 					data->decalage_y + data->player.y - (sin(-(data->player.angle))* i), 0xFFC0CB);
+	data->decalage_x = 0;
+	data->decalage_y = 0;
 	ft_raycasting(data);
-	// row = -1;
-	// while (data->map.map[++row])
-	// {
-	// 	col = -1;
-	// 	while (data->map.map[row][++col])
-	// 	{
-	// 		// if (row % 64 == 0 || col % 64 == 0)
-	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-	// 		// 			 (data->decalage_y + row), 0x606060);
-	// 		if (data->map.map[row][col] == '1')
-	// 			put_pixel_to_frame_buf(data, (data->decalage_x + col),
-	// 					 (data->decalage_y + row), BLUE);
-	// 		// else if (data->map.map[row][col] == '0')
-	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-	// 		// 			 (data->decalage_y + row), 0x000000);
-	// 		// else if (ft_strchr("EWNS", data->map.map[row][col]))
-	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-	// 		// 			 (data->decalage_y + row), 0x000000);
-	// 		// else
-	// 		// 	put_pixel_to_frame_buf(data, (data->decalage_x + col),
-	// 		// 			 (data->decalage_y + row), 0x00FF00);
-	// 	}
-	// }
+	// ft_minimap(data);
+	ft_crosshair(data);
 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->mlx.frame_buf, 0, 0);
 	return (0);
 }
 
 void	execution(t_global *data)
 {
-	(void)data;
-	// for (int i = 0; data->parsing.e_map[i]; i++)
-	// 	printf("%s\n", data->parsing.e_map[i]);
-	// printf("x : %d y : %d\n", data->map.largeur, data->map.hauteur);
 	data->mlx.mlx = mlx_init();
 	if (!data->mlx.mlx)
 		ft_error(data->gc, "Mlx error");
@@ -290,12 +256,6 @@ void	execution(t_global *data)
 	data->mlx.addr = mlx_get_data_addr(data->mlx.frame_buf, &data->mlx.bits_per_pixel,
 			&data->mlx.line_length, &data->mlx.endian);
 	ft_screen(data);
-	// for (int y = 0; y < 500; y++)
-	// 	for (int x = 0; x < 500; x++)
-	// 	{
-	// 		mlx_pixel_put(data->mlx.mlx, data->mlx.frame_buf, x, y, 0xFF0000);
-	// 	}
-	// mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->mlx.frame_buf, 0, 0);
 	ft_hooks(data);
 	mlx_loop(data->mlx.mlx);
 	return ;
@@ -308,7 +268,6 @@ void	parsing(t_global *data, char *path)
 	get_param_and_map(data, 0, 0, 0);
 	parsing_map(data);
 	are_params_correct(data);
-	// puts("ok");
 	expand_map_size(data);	
 	return ;
 }
