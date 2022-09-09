@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 08:34:16 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/09 23:34:10 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,11 +200,26 @@ void	ft_raycasting(t_global *d)
 	}
 }
 
+void	player_view(t_global *d)
+{
+	t_ray	ray;
+	
+	ray.fov = 0;
+	ray.num = 0;
+	while (ray.num < WIDTH)
+	{
+		ray.angle = d->player.angle + ray.fov * DEGREE - (FOV * DEGREE) / 2;
+		distance_final(&ray, next_wall_v(d, &ray, 0), next_wall_h(d, &ray, 0));
+		print_line(d, ray.distance, ray.angle, PINK);
+		ray.num++;
+		ray.fov += RAY;
+	}
+}
+
 void	ft_minimap(t_global *d)
 {
 	int		row;
 	int		col;
-	t_ray	ray;
 
 	row = -1;
 	while (d->map.map[++row])
@@ -229,14 +244,7 @@ void	ft_minimap(t_global *d)
 						(d->decalage_y + row), 0x00FF00);
 		}
 	}
-	ray.num = 0;
-	for (float fov = 0; fov < FOV + RAY; fov += RAY)
-	{
-		ray.angle = d->player.angle + fov * DEGREE - (FOV * DEGREE) / 2;
-		distance_final(&ray, next_wall_v(d, &ray, 0), next_wall_h(d, &ray, 0));
-		print_line(d, ray.distance, ray.angle, PINK);
-		ray.num++;
-	}
+	player_view(d);
 }
 
 void	ft_crosshair(t_global *data)
