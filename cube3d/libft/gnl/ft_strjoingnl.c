@@ -6,12 +6,11 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 11:45:31 by cbarbit           #+#    #+#             */
-/*   Updated: 2022/09/03 05:25:14 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/09 23:42:00 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
-
 
 char	*ft_strchr_ad(const char *s, int c)
 {

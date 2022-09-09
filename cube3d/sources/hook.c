@@ -6,18 +6,11 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 08:15:05 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 01:07:35 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
-int	ft_useless(t_global *data)
-{
-	ft_free(data->gc);
-	exit(0);
-	return (0);
-}
 
 void	move_pos(t_global *d, int c, int c2)
 {
@@ -49,23 +42,6 @@ void	move_pos2(t_global *d, int c, int c2)
 	}
 	d->player.x = d->player.next_x;
 	d->player.y = d->player.next_Y;
-}
-
-int	my_keyrelease_func(int keycode, t_global *data)
-{
-	if (data->last_input == keycode)
-		data->last_input = 0;
-	if (data->pre_last_input == keycode)
-		data->pre_last_input = 0;
-	return (0);
-}
-
-void	ft_hooks(t_global *data)
-{
-	mlx_hook(data->mlx.win, 3, (1L << 1), my_keyrelease_func, data);
-	mlx_hook(data->mlx.win, 2, (1L << 0), key_hook, data);
-	mlx_hook(data->mlx.win, 33, 0, ft_useless, data);
-	mlx_hook(data->mlx.win, 42, (1L << 15), ft_screen, data);
 }
 
 void	move_angle(t_global *data, enum e_keycode direction)
@@ -124,4 +100,12 @@ int	key_hook(int keycode, t_global *data)
 	mlx_clear_window(data->mlx.mlx, data->mlx.win);
 	ft_screen(data);
 	return (0);
+}
+
+void	ft_hooks(t_global *data)
+{
+	mlx_hook(data->mlx.win, 3, (1L << 1), my_keyrelease_func, data);
+	mlx_hook(data->mlx.win, 2, (1L << 0), key_hook, data);
+	mlx_hook(data->mlx.win, 33, 0, ft_useless, data);
+	mlx_hook(data->mlx.win, 42, (1L << 15), ft_screen, data);
 }

@@ -6,12 +6,11 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:21:24 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/03 05:27:15 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 01:13:51 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
-
 
 char	*ft_fill_str(int fd, char *str)
 {
@@ -55,13 +54,11 @@ char	*find_line(char *save)
 	return (str);
 }
 
-char	*find_rest_clear(char	*save)
+char	*find_rest_clear(char	*save, int i)
 {
 	char	*str;
-	int		i;
 	int		x;
 
-	i = 0;
 	while (save[i] && save[i] != '\n')
 		i++;
 	if (!save[i])
@@ -78,6 +75,11 @@ char	*find_rest_clear(char	*save)
 		str[x++] = save[i++];
 	str[x] = '\0';
 	free(save);
+	if (x == 0)
+	{
+		free(str);
+		str = NULL;
+	}
 	return (str);
 }
 
@@ -92,6 +94,6 @@ char	*get_next_line(int fd)
 	if (!save)
 		return (NULL);
 	str = find_line(save);
-	save = find_rest_clear(save);
+	save = find_rest_clear(save, 0);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:39:54 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 07:53:42 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 00:07:39 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	init_var(t_global *g, t_gc *gc)
 	g->parsing.param = ft_dispatchsplit("NO SO WE EA F C", ' ', gc);
 	g->last_input = 0;
 	g->pre_last_input = 0;
+	g->mlx.mlx = NULL;
+	g->map.east_texture = NULL;
+	g->map.west_texture = NULL;
+	g->map.north_texture = NULL;
+	g->map.south_texture = NULL;
 }
 
 void	checking_file_name(char *path)

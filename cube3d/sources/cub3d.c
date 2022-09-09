@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 23:34:10 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/10 00:18:30 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,12 @@ int	ft_screen(t_global *data)
 	return (0);
 }
 
+void	ft_error_xpm(t_global *data, char *msg)
+{
+	ft_destroy_mlx(data);
+	ft_error(data->gc, msg);
+}
+
 static void	load_texture(t_global *data)
 {
 	int		width;
@@ -271,23 +277,23 @@ static void	load_texture(t_global *data)
 	data->map.east_texture = mlx_xpm_file_to_image(data->mlx.mlx, \
 		data->parsing.str_parsing[EA], &width, &height);
 	if (!data->map.east_texture)
-		ft_error(data->gc, "Conversion of XPM failed");
-	ft_gcadd_back(data->gc, ft_gcnew(data->map.east_texture, data->gc));
+		ft_error_xpm(data, "Conversion of XPM failed");
+	// ft_gcadd_back(data->gc, ft_gcnew(data->map.east_texture, data->gc));
 	data->map.west_texture = mlx_xpm_file_to_image(data->mlx.mlx, \
 		data->parsing.str_parsing[WE], &width, &height);
 	if (!data->map.west_texture)
-		ft_error(data->gc, "Conversion of XPM failed");
-	ft_gcadd_back(data->gc, ft_gcnew(data->map.west_texture, data->gc));
+		ft_error_xpm(data, "Conversion of XPM failed");
+	// ft_gcadd_back(data->gc, ft_gcnew(data->map.west_texture, data->gc));
 	data->map.north_texture = mlx_xpm_file_to_image(data->mlx.mlx, \
 		data->parsing.str_parsing[NO], &width, &height);
 	if (!data->map.north_texture)
-		ft_error(data->gc, "Conversion of XPM failed");
-	ft_gcadd_back(data->gc, ft_gcnew(data->map.north_texture, data->gc));
+		ft_error_xpm(data, "Conversion of XPM failed");
+	// ft_gcadd_back(data->gc, ft_gcnew(data->map.north_texture, data->gc));
 	data->map.south_texture = mlx_xpm_file_to_image(data->mlx.mlx, \
 		data->parsing.str_parsing[SO], &width, &height);
 	if (!data->map.south_texture)
-		ft_error(data->gc, "Conversion of XPM failed");
-	ft_gcadd_back(data->gc, ft_gcnew(data->map.south_texture, data->gc));
+		ft_error_xpm(data, "Conversion of XPM failed");
+	// ft_gcadd_back(data->gc, ft_gcnew(data->map.south_texture, data->gc));
 }
 
 void	execution(t_global *data)
@@ -300,11 +306,9 @@ void	execution(t_global *data)
 	data->mlx.win = mlx_new_window(data->mlx.mlx, 1080, 720, "Cub3d");
 	if (!data->mlx.win)
 		ft_error(data->gc, "Window error");
-	ft_gcadd_back(data->gc, ft_gcnew(data->mlx.win, data->gc));
 	data->mlx.frame_buf = mlx_new_image(data->mlx.mlx, 1080, 720);
 	if (!data->mlx.frame_buf)
 		ft_error(data->gc, "Frame error");
-	ft_gcadd_back(data->gc, ft_gcnew(data->mlx.frame_buf, data->gc));
 	data->mlx.addr = mlx_get_data_addr(data->mlx.frame_buf, \
 	&data->mlx.bits_per_pixel,
 			&data->mlx.line_length, &data->mlx.endian);
