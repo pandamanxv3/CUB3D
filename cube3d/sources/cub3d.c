@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 00:18:30 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 01:39:17 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,13 @@ void	ft_raying(t_global *d, t_ray *r)
 	float	fix;
 	float	height;
 	float	sol;
+	float	diff;
 
+	diff = 0;
 	fix = modulo(d->player.angle - r->angle, 2 * PI);
 	height = HEIGHT / r->distance * TXT_SIZE / cos(fix);
+	if (height >= HEIGHT)
+		diff = (height - HEIGHT);
 	if (height >= HEIGHT)
 		height = HEIGHT;
 	else if (height < 0)
@@ -176,7 +180,7 @@ void	ft_raying(t_global *d, t_ray *r)
 	for (int i = sol; i < sol + height; i++)
 	{
 		put_pixel_to_frame_buf(d, WIDTH - r->num - 1, i, \
-			get_color(d, r, i - sol, height));
+			get_color(d, r, i - sol + diff / 2, height + diff));
 	}
 	for (int i = 0; i < sol; i++)
 		put_pixel_to_frame_buf(d, WIDTH - r->num - 1, i, d->map.floor_color);
