@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 04:15:26 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/09 07:23:51 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ typedef enum e_keycode {
 	LEFT = 97,
 	RIGHT = 100,
 	ESCAPE = 65307,
+	LEFT_ARROW = 65361,
+	RIGHT_ARROW = 65363
 }				t_keycode;
 
 typedef struct s_parsing
@@ -187,6 +189,9 @@ typedef struct s_global
 	t_map		map;
 	float		decalage_x;
 	float		decalage_y;
+	int			current_input;
+	int			last_input;
+	int			pre_last_input;
 }	t_global;
 
 /* ******************* PARSING ******************* */

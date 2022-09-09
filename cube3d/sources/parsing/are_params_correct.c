@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   are_params_correct.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:23:07 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 05:24:59 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/09 07:54:10 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ unsigned int	is_color_correct(t_global *g, int to_color, int i, int count)
 		if (ft_atoi_remixed(tab[i++]) == -1)
 			ft_error(g->gc, ERR_COLOR);
 	}
-	return (rgb_to_int(ft_atoi_remixed(tab[0]), ft_atoi_remixed(tab[1]), ft_atoi_remixed(tab[2])));
+	return (rgb_to_int(ft_atoi_remixed(tab[0]), \
+		ft_atoi_remixed(tab[1]), ft_atoi_remixed(tab[2])));
 }
-
 
 void	are_params_correct(t_global *data)
 {

@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:39:54 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/03 04:28:30 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/09 07:53:42 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void	init_var(t_global *g, t_gc *gc)
 {
-	// ft_strdup()
 	ft_memcpy(&g->parsing.map_char2, &"0NSEW\0", 6);
 	ft_memcpy(&g->parsing.map_char, &"01NSEW\0", 7);
 	ft_memcpy(&g->parsing.white_space, &"\f\t\n\r\v \0", 7);
 	g->parsing.param = ft_dispatchsplit("NO SO WE EA F C", ' ', gc);
+	g->last_input = 0;
+	g->pre_last_input = 0;
 }
 
 void	checking_file_name(char *path)

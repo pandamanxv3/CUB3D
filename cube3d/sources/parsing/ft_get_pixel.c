@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 03:50:07 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/03 04:50:10 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/09 07:53:09 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	put_pixel_to_frame_buf(t_global *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->mlx.addr + (y * data->mlx.line_length + x * (data->mlx.bits_per_pixel / 8));
+	dst = data->mlx.addr + (y * data->mlx.line_length + x \
+		* (data->mlx.bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
 
