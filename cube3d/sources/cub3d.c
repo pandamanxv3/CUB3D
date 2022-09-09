@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 01:39:17 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/10 01:48:59 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,52 +204,7 @@ void	ft_raycasting(t_global *d)
 	}
 }
 
-void	player_view(t_global *d)
-{
-	t_ray	ray;
-	
-	ray.fov = 0;
-	ray.num = 0;
-	while (ray.num < WIDTH)
-	{
-		ray.angle = d->player.angle + ray.fov * DEGREE - (FOV * DEGREE) / 2;
-		distance_final(&ray, next_wall_v(d, &ray, 0), next_wall_h(d, &ray, 0));
-		print_line(d, ray.distance, ray.angle, PINK);
-		ray.num++;
-		ray.fov += RAY;
-	}
-}
 
-void	ft_minimap(t_global *d)
-{
-	int		row;
-	int		col;
-
-	row = -1;
-	while (d->map.map[++row])
-	{
-		col = -1;
-		while (d->map.map[row][++col])
-		{
-			if (row % 64 == 0 || col % 64 == 0)
-				put_pixel_to_frame_buf(d, (d->decalage_x + col), \
-						(d->decalage_y + row), 0x606060);
-			if (d->map.map[row][col] == '1')
-				put_pixel_to_frame_buf(d, (d->decalage_x + col), \
-						(d->decalage_y + row), BLUE);
-			else if (d->map.map[row][col] == '0')
-				put_pixel_to_frame_buf(d, (d->decalage_x + col), \
-						(d->decalage_y + row), 0x000000);
-			else if (ft_strchr("EWNS", d->map.map[row][col]))
-				put_pixel_to_frame_buf(d, (d->decalage_x + col), \
-						(d->decalage_y + row), 0x000000);
-			else
-				put_pixel_to_frame_buf(d, (d->decalage_x + col), \
-						(d->decalage_y + row), 0x00FF00);
-		}
-	}
-	player_view(d);
-}
 
 void	ft_crosshair(t_global *data)
 {

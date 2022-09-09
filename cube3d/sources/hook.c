@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 01:07:35 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 01:24:04 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	move_pos(t_global *d, int c, int c2)
 {
-	d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
-	d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
+	d->player.next_x = d->player.x + ((cos((-d->player.angle)) * (c-3)) * c2);
+	d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * (c-3)) * c2);
 	while (d->map.map[(int)d->player.next_Y][(int)d->player.next_x] == '1')
 	{
-		d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
-		d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
+		d->player.next_x = d->player.x + ((cos((-d->player.angle)) * (c-3)) * c2);
+		d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * (c - 3)) * c2);
 		c--;
-		if (c == 0)
+		if (c == 3)
 			return ;
 	}
 	d->player.x = d->player.next_x;
