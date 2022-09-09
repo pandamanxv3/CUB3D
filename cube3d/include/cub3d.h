@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/08 01:52:16 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/09 04:15:26 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,10 @@ typedef struct s_map
 	char			**map;
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
-	char			*wall_path[4];
+	void	*north_texture;
+	void	*west_texture;
+	void	*east_texture;
+	void	*south_texture;
 }	t_map;
 
 

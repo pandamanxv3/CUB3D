@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/08 03:01:47 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/09 05:30:15 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,29 +88,23 @@ int	collision(t_global *data, int coord_x, int coord_y)
 
 float	next_wall_h(t_global *data, t_ray *ray, int step)
 {
-	float	x;
-	float	y;
-
-	y = data->player.y
+	ray->y_h = data->player.y
 		+ ((vision(ray->angle) == SE || vision(ray->angle) == SW) * (((step + 1) * 64) - modulo(data->player.y, 64)))
 		- ((vision(ray->angle) == NE || vision(ray->angle) == NW) * ((step * 64) + modulo(data->player.y, 64)));
-	x = data->player.x + (y - data->player.y) / tan(-ray->angle);
-	if (collision(data, x, y) || step > 50)
-		return (get_distance(data->player.x, data->player.y, x, y));
+	ray->x_h = data->player.x + (ray->y_h - data->player.y) / tan(-ray->angle);
+	if (collision(data, ray->x_h, ray->y_h) || step > 50)
+		return (get_distance(data->player.x, data->player.y, ray->x_h, ray->y_h));
 	return (next_wall_h(data, ray, step + 1));
 }
 
 float	next_wall_v(t_global *data, t_ray *ray, int step)
 {
-	float	x;
-	float	y;
-
-	x = data->player.x
+	ray->x_v = data->player.x
 		+ ((vision(ray->angle) == NE || vision(ray->angle) == SE) * (((step + 1) * 64) - modulo(data->player.x, 64)))
 		- ((vision(ray->angle) == NW || vision(ray->angle) == SW) * ((step * 64) + modulo(data->player.x, 64)));
-	y = data->player.y - tan(ray->angle) * (x - data->player.x);
-	if (collision(data, x, y) || step > 50)
-		return (get_distance(data->player.x, data->player.y, x, y));
+	ray->y_v = data->player.y - tan(ray->angle) * (ray->x_v - data->player.x);
+	if (collision(data, ray->x_v, ray->y_v) || step > 50)
+		return (get_distance(data->player.x, data->player.y, ray->x_v, ray->y_v));
 	return (next_wall_v(data, ray, step + 1));
 }
 
@@ -124,29 +118,47 @@ void distance_final(t_ray *ray, float vert, float horiz)
 		ray->distance = vert;
 	else
 		ray->distance = horiz;
+	ray->x = (ray->distance == horiz) * ray->x_h 
+			+ (ray->distance == vert && ray->distance != horiz) * ray->x_v;
+	ray->y = (ray->distance == horiz) * ray->y_h 
+			+ (ray->distance == vert && ray->distance != horiz) * ray->y_v;
+	ray->hit = S;
 	if ((vision(ray->angle) == NE || vision(ray->angle) == SE) && ray->distance == vert)
 		ray->hit = E;
 	else if ((vision(ray->angle) == NW || vision(ray->angle) == SW) && ray->distance == vert)
 		ray->hit = W;
 	else if ((vision(ray->angle) == NE || vision(ray->angle) == NW) && ray->distance == horiz)
 		ray->hit = N;
-	else
-		ray->hit = S;
 	return ;
+}
+
+//y : le y de la texture a affiche
+//height : la taille du mur
+int get_color(t_global *data, t_ray *ray, int y, int height)
+{
+	void	*img;
+	int	x;
+	float fix =  (float)TXT_SIZE / (float)height;
+
+	img = data->map.north_texture;
+	if (ray->hit == S)
+		img = data->map.south_texture;
+	if (ray->hit == W)
+		img = data->map.west_texture;
+	if (ray->hit == E)
+		img = data->map.east_texture;
+	x = modulo(ray->y, TXT_SIZE);
+	if (ray->hit == N || ray->hit == S)
+		x = modulo(ray->x, TXT_SIZE);
+	/* debugging some things */
+	// if (ray->num == (int)(WIDTH / 2))
+		// printf("pixel at %dy\n\theight %d\n\ty %d\n\tfix %f\n", (int)(fix * y), height, y, fix);
+
+	return (ft_get_pixel(x, fix * y, img));
 }
 
 void ft_raying(t_global *data, t_ray *ray)
 {
-	/* color depending on the side */
-	int color;
-	if (ray->hit == N)
-		color = YELLOW;
-	else if (ray->hit == E)
-		color = WHITE;
-	else if (ray->hit == S)
-		color = ORANGE;
-	else
-		color = RED;
 	/* Mur */
 	float fix = modulo(data->player.angle - ray->angle, 2 * PI);
 	float height = HEIGHT / ray->distance * TXT_SIZE / cos(fix);
@@ -156,13 +168,13 @@ void ft_raying(t_global *data, t_ray *ray)
 		height = 0;
 	float sol = (HEIGHT - height) / 2;
 	for (int i = sol; i < sol + height; i++)
-		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, color);
-	/* Plafond */
+		put_pixel_to_frame_buf(data, WIDTH - ray->num - 1, i, get_color(data, ray, i - sol, height));
+	/* Plafond */	
 	for (int i = 0; i < sol; i++)
-		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, data->map.ceiling_color);
+		put_pixel_to_frame_buf(data, WIDTH - ray->num - 1, i, data->map.floor_color);
 	/* Sol */
 	for (int i = sol + height; i < HEIGHT; i++)
-		put_pixel_to_frame_buf(data, abs(WIDTH - ray->num), i, data->map.floor_color);
+		put_pixel_to_frame_buf(data, WIDTH - ray->num - 1, i, data->map.ceiling_color);
 }
 
 void ft_raycasting(t_global *data)
@@ -232,6 +244,7 @@ int	ft_screen(t_global *data)
 {
 	data->decalage_x = 0;
 	data->decalage_y = 0;
+	// printf("---------new casting--------\n\n\n");
 	ft_raycasting(data);
 	// ft_minimap(data);
 	ft_crosshair(data);
@@ -239,12 +252,42 @@ int	ft_screen(t_global *data)
 	return (0);
 }
 
+
+static void	load_texture(t_global *data)
+{
+	int		width;
+	int		height;
+
+	data->map.east_texture = mlx_xpm_file_to_image(data->mlx.mlx,
+		data->parsing.str_parsing[EA], &width, &height);
+	if (!data->map.east_texture)
+		ft_error(data->gc, "Conversion of XPM failed");
+	ft_gcadd_back(data->gc, ft_gcnew(data->map.east_texture, data->gc));
+	data->map.west_texture = mlx_xpm_file_to_image(data->mlx.mlx,
+		data->parsing.str_parsing[WE], &width, &height);
+	if (!data->map.west_texture)
+		ft_error(data->gc, "Conversion of XPM failed");
+	ft_gcadd_back(data->gc, ft_gcnew(data->map.west_texture, data->gc));
+	data->map.north_texture = mlx_xpm_file_to_image(data->mlx.mlx,
+		data->parsing.str_parsing[NO], &width, &height);
+	if (!data->map.north_texture)
+		ft_error(data->gc, "Conversion of XPM failed");
+	ft_gcadd_back(data->gc, ft_gcnew(data->map.north_texture, data->gc));
+	data->map.south_texture = mlx_xpm_file_to_image(data->mlx.mlx,
+		data->parsing.str_parsing[SO], &width, &height);
+	if (!data->map.south_texture)
+		ft_error(data->gc, "Conversion of XPM failed");
+	ft_gcadd_back(data->gc, ft_gcnew(data->map.south_texture, data->gc));
+}
+
+
 void	execution(t_global *data)
 {
 	data->mlx.mlx = mlx_init();
 	if (!data->mlx.mlx)
 		ft_error(data->gc, "Mlx error");
 	ft_gcadd_back(data->gc, ft_gcnew(data->mlx.mlx, data->gc));
+	load_texture(data);
 	data->mlx.win = mlx_new_window(data->mlx.mlx, 1080 , 720 , "Cub3d");
 	if (!data->mlx.win)
 		ft_error(data->gc, "Window error");

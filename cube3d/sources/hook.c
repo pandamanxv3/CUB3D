@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 06:30:03 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/09 05:17:37 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	move_angle(t_global *data, enum e_keycode direction)
 	}
 	else if (direction == RIGHT)
 	{
-		data->player.angle -= 3* DEGREE;
+		data->player.angle -= 3 * DEGREE;
 		data->player.angle = modulo(data->player.angle, 2 * PI);
 	}
 } 

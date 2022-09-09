@@ -6,7 +6,7 @@
 /*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:23:07 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/07 05:11:33 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/09 05:24:59 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,13 @@ unsigned int	is_color_correct(t_global *g, int to_color, int i, int count)
 	return (rgb_to_int(ft_atoi_remixed(tab[0]), ft_atoi_remixed(tab[1]), ft_atoi_remixed(tab[2])));
 }
 
+
 void	are_params_correct(t_global *data)
 {
 	data->map.ceiling_color = is_color_correct(data, C, -1, 0);
 	data->map.floor_color = is_color_correct(data, F, -1, 0);
-	printf("plafond : %d, sol : %d\n", data->map.ceiling_color, data->map.floor_color);
 	if (!is_texture_unique(data))
 		ft_error(data->gc, ERR_TWICE);
 	if (!is_file_xpm(data))
 		ft_error(data->gc, ERR_XPM);
-	data->map.wall_path[NO] = data->parsing.str_parsing[NO];
-	data->map.wall_path[SO] = data->parsing.str_parsing[SO];
-	data->map.wall_path[WE] = data->parsing.str_parsing[WE];
-	data->map.wall_path[EA] = data->parsing.str_parsing[EA];
 }
