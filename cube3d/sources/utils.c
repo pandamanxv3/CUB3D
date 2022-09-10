@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 01:05:01 by adben-mc          #+#    #+#             */
-/*   Updated: 2022/09/10 03:42:11 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 05:43:57 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	move_pos2(t_global *d, int c, int c2)
 {
 	d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
 	d->player.next_y = d->player.y + ((cos((d->player.angle)) * c) * c2);
-	while (d->map.map[(int)d->player.next_y][(int)d->player.next_x] == '1')
+	while (d->map.map[(int)d->player.next_y + 2][(int)d->player.next_x] == '1' \
+		|| d->map.map[(int)d->player.next_y -2][(int)d->player.next_x] == '1' \
+		|| d->map.map[(int)d->player.next_y][(int)d->player.next_x + 2] == '1'\
+		|| d->map.map[(int)d->player.next_y][(int)d->player.next_x - 2] == '1')
 	{
 		d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
 		d->player.next_y = d->player.y + ((cos((d->player.angle)) * c) * c2);

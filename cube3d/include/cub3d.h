@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 04:56:01 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 05:44:20 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ OUTSIDE THE MAP"
 # define PI 3.14159265
 # define TXT_SIZE 64
 # define DEGREE 0.0174532925
-# define SPEED 10
+# define SPEED 4
 # define FOV 60
 // RAY = FOV / WIDTH : il s'agit de l'ecart entre 2 rayons
 # define RAY 0.055555556

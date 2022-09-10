@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 02:20:34 by adben-mc          #+#    #+#             */
-/*   Updated: 2022/09/10 04:55:04 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 04:59:39 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,3 @@ void	ft_minimap(t_global *data)
 	}
 	player_view(data, x, y, rayon);
 }
-W

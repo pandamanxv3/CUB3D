@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 04:14:28 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 05:43:47 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 void	move_pos(t_global *d, int c, int c2)
 {
-	float	temp_x;
-	float	temp_y;
-	int		cc;
-
 	d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
 	d->player.next_y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
-	while (d->map.map[(int)d->player.next_y][(int)d->player.next_x] == '1')
+	while (d->map.map[(int)d->player.next_y + 2][(int)d->player.next_x] == '1' \
+		|| d->map.map[(int)d->player.next_y -2][(int)d->player.next_x] == '1' \
+		|| d->map.map[(int)d->player.next_y][(int)d->player.next_x + 2] == '1' \
+		|| d->map.map[(int)d->player.next_y][(int)d->player.next_x - 2] == '1')
 	{
 		d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
 		d->player.next_y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
@@ -28,17 +27,8 @@ void	move_pos(t_global *d, int c, int c2)
 		if (c == 0)
 			return ;
 	}
-	cc = c;
-	while (c != 1)
-	{
-		temp_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
-		temp_y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
-		if (d->map.map[(int)temp_y][(int)temp_x] == '1')
-			cc = c - 1;
-		c--;
-	}
-	d->player.x = d->player.x + ((cos((-d->player.angle)) * cc) * c2);
-	d->player.y = d->player.y + ((sin((-d->player.angle)) * cc) * c2);
+	d->player.x = d->player.next_x;
+	d->player.y = d->player.next_y;
 }
 
 void	move_angle(t_global *data, enum e_keycode direction)
