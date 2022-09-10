@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:41:46 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 02:13:02 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 02:16:04 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,22 +237,18 @@ static void	load_texture(t_global *data)
 		data->parsing.str_parsing[EA], &width, &height);
 	if (!data->map.east_texture)
 		ft_error_xpm(data, "Conversion of XPM failed");
-	// ft_gcadd_back(data->gc, ft_gcnew(data->map.east_texture, data->gc));
 	data->map.west_texture = mlx_xpm_file_to_image(data->mlx.mlx, \
 		data->parsing.str_parsing[WE], &width, &height);
 	if (!data->map.west_texture)
 		ft_error_xpm(data, "Conversion of XPM failed");
-	// ft_gcadd_back(data->gc, ft_gcnew(data->map.west_texture, data->gc));
 	data->map.north_texture = mlx_xpm_file_to_image(data->mlx.mlx, \
 		data->parsing.str_parsing[NO], &width, &height);
 	if (!data->map.north_texture)
 		ft_error_xpm(data, "Conversion of XPM failed");
-	// ft_gcadd_back(data->gc, ft_gcnew(data->map.north_texture, data->gc));
 	data->map.south_texture = mlx_xpm_file_to_image(data->mlx.mlx, \
 		data->parsing.str_parsing[SO], &width, &height);
 	if (!data->map.south_texture)
 		ft_error_xpm(data, "Conversion of XPM failed");
-	// ft_gcadd_back(data->gc, ft_gcnew(data->map.south_texture, data->gc));
 }
 
 void	execution(t_global *data)
@@ -292,15 +288,12 @@ int	main(int argc, char **argv)
 {
 	t_global	data;
 
-	// if (argc == 1 || argc > 2)
-	// {
-	// 	write(1, ERR_ARGC, sizeof(ERR_ARGC));
-	// 	return (1);
-	// }
-	(void)argc;
-	(void)argv;
-	// parsing(&data, argv[1]);
-	parsing(&data, "test.cub");
+	if (argc == 1 || argc > 2)
+	{
+		write(1, ERR_ARGC, sizeof(ERR_ARGC));
+		return (1);
+	}
+	parsing(&data, argv[1]);
 	execution(&data);
 	ft_free(data.gc);
 	return (0);
