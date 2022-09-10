@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 00:06:41 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 02:10:43 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ int		charset(char c, char *str);
 
 /* -------------------- expand_map_size -------------------- */
 
-void 	copy_to_expand(t_global *data, int sizex, int sizey);
+void	copy_to_expand(t_global *data, int i, int y, int index);
 void	expand_map_size(t_global	*data);
 int		malloc_new_map(t_global	*data);
 int		fill_new_map(t_global *data, int size);
@@ -254,6 +254,7 @@ float 			modulo(float value, float mod_value);
 
 float 			conv_rad(float angle);
 
+void	move_pos2(t_global *d, int c, int c2);
 int				ft_useless(t_global *data);
 void			ft_hooks(t_global *data);
 void			ft_moves(t_global *data);

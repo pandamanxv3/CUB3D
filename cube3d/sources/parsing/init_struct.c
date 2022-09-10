@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:39:54 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 00:07:39 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 02:12:16 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ void	ft_init_struct(t_global *g, char *path)
 {
 	int	i;
 
-	g->gc = ft_gcnew(NULL, NULL);
-	init_var(g, g->gc);
 	i = -1;
 	checking_file_name(path);
 	while (i < 6)
 		g->parsing.bool_parsing[i++] = 0;
 	g->path = path;
 	g->nb_of_line = 0;
+	g->gc = ft_gcnew(NULL, NULL);
+	init_var(g, g->gc);
 	g->parsing.str_parsing = malloc(sizeof(char *) * 7);
 	if (!g->parsing.str_parsing)
 		ft_error(g->gc, ERR_MALL);

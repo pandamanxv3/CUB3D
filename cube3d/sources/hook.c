@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 01:24:04 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 02:06:58 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,31 @@
 
 void	move_pos(t_global *d, int c, int c2)
 {
-	d->player.next_x = d->player.x + ((cos((-d->player.angle)) * (c-3)) * c2);
-	d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * (c-3)) * c2);
-	while (d->map.map[(int)d->player.next_Y][(int)d->player.next_x] == '1')
-	{
-		d->player.next_x = d->player.x + ((cos((-d->player.angle)) * (c-3)) * c2);
-		d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * (c - 3)) * c2);
-		c--;
-		if (c == 3)
-			return ;
-	}
-	d->player.x = d->player.next_x;
-	d->player.y = d->player.next_Y;
-}
+	float	temp_x;
+	float	temp_y;
+	int		cc;
 
-void	move_pos2(t_global *d, int c, int c2)
-{
-	d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
-	d->player.next_Y = d->player.y + ((cos((d->player.angle)) * c) * c2);
+	d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
+	d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
 	while (d->map.map[(int)d->player.next_Y][(int)d->player.next_x] == '1')
 	{
-		d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
-		d->player.next_Y = d->player.y + ((cos((d->player.angle)) * c) * c2);
+		d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
+		d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
 		c--;
 		if (c == 0)
 			return ;
 	}
-	d->player.x = d->player.next_x;
-	d->player.y = d->player.next_Y;
+	cc = c;
+	while (c != 1)
+	{
+		temp_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
+		temp_y = d->player.x + ((cos((-d->player.angle)) * c) * c2);
+		if (d->map.map[(int)temp_x][(int)temp_y] == '1')
+			cc = c - 1;
+		c--;
+	}
+	d->player.x = d->player.x + ((cos((-d->player.angle)) * cc) * c2);
+	d->player.y = d->player.y + ((sin((-d->player.angle)) * cc) * c2);
 }
 
 void	move_angle(t_global *data, enum e_keycode direction)

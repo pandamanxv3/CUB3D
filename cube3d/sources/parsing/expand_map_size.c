@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 08:17:13 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 08:06:19 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 02:08:53 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,10 @@ void	expand(t_global *data, int sizex, int sizey)
 	ft_gcadd_back(data->gc, ft_gcnew(data->map.map, data->gc));
 }
 
-void	copy_to_expand(t_global *data, int sizex, int sizey)
+void	copy_to_expand(t_global *data, int i, int y, int index)
 {
-	int	i;
-	int	y;
-	int	index;
 	int	index2;
 
-	i = 0;
-	(void)sizex;
-	(void)sizey;
 	while (data->parsing.e_map[i])
 	{
 		y = 0;
@@ -122,5 +116,5 @@ void	expand_map_size(t_global	*data)
 	data->map.largeur = malloc_new_map(data);
 	data->map.hauteur = fill_new_map(data, data->map.largeur);
 	expand(data, data->map.largeur, data->map.hauteur);
-	copy_to_expand(data, data->map.largeur, data->map.hauteur);
+	copy_to_expand(data, 0, 0, 0);
 }

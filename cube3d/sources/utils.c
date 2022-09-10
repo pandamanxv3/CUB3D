@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 01:05:01 by adben-mc          #+#    #+#             */
-/*   Updated: 2022/09/10 01:07:03 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 02:07:09 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,22 @@ void	ft_destroy_mlx(t_global *data)
 		mlx_destroy_image(data->mlx.mlx, data->map.north_texture);
 	if (data->map.south_texture != NULL)
 		mlx_destroy_image(data->mlx.mlx, data->map.south_texture);
+}
+
+void	move_pos2(t_global *d, int c, int c2)
+{
+	d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
+	d->player.next_Y = d->player.y + ((cos((d->player.angle)) * c) * c2);
+	while (d->map.map[(int)d->player.next_Y][(int)d->player.next_x] == '1')
+	{
+		d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
+		d->player.next_Y = d->player.y + ((cos((d->player.angle)) * c) * c2);
+		c--;
+		if (c == 0)
+			return ;
+	}
+	d->player.x = d->player.next_x;
+	d->player.y = d->player.next_Y;
 }
 
 int	ft_useless(t_global *data)
