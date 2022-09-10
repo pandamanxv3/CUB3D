@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 04:20:53 by adben-mc         ###   ########.fr       */
+/*   Updated: 2022/09/10 04:56:01 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,9 +293,10 @@ float			next_wall_v(t_global *d, t_ray *ray, int step);
 void			distance_final(t_ray *ray, float vert, float horiz);
 void			ft_raying(t_global *d, t_ray *r, int diff, int i);
 
-
 /* -------------------- mini_map -------------------- */
 void			ft_minimap(t_global *data);
+
+/* -------------------- utils -------------------- */
 
 int				vision(float angle);
 void			ft_destroy_mlx(t_global *data);
