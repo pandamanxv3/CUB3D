@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 02:34:00 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 02:38:29 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 04:21:22 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	ft_screen(t_global *data)
 	data->decalage_x = 0;
 	data->decalage_y = 0;
 	ft_raycasting(data);
+	ft_minimap(data);
 	ft_crosshair(data);
 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, \
 	data->mlx.frame_buf, 0, 0);
