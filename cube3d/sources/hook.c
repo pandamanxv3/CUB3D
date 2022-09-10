@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 03:41:50 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 04:14:28 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ int	key_hook(int keycode, t_global *data)
 
 void	ft_hooks(t_global *data)
 {
-	mlx_hook(data->mlx.win, 3, (1L << 1), my_keyrelease_func, data);
-	mlx_hook(data->mlx.win, 2, (1L << 0), key_hook, data);
-	mlx_hook(data->mlx.win, 33, 0, ft_useless, data);
-	mlx_hook(data->mlx.win, 42, (1L << 15), ft_screen, data);
+	mlx_hook(data->mlx.win, 3, (1L << 1), &my_keyrelease_func, data);
+	mlx_hook(data->mlx.win, 2, (1L << 0), &key_hook, data);
+	mlx_hook(data->mlx.win, 17, 0, &ft_useless, data);
 }
