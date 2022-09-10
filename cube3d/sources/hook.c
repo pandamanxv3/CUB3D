@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 05:30:45 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 02:06:58 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 03:41:50 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	move_pos(t_global *d, int c, int c2)
 	int		cc;
 
 	d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
-	d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
-	while (d->map.map[(int)d->player.next_Y][(int)d->player.next_x] == '1')
+	d->player.next_y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
+	while (d->map.map[(int)d->player.next_y][(int)d->player.next_x] == '1')
 	{
 		d->player.next_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
-		d->player.next_Y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
+		d->player.next_y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
 		c--;
 		if (c == 0)
 			return ;
@@ -32,8 +32,8 @@ void	move_pos(t_global *d, int c, int c2)
 	while (c != 1)
 	{
 		temp_x = d->player.x + ((cos((-d->player.angle)) * c) * c2);
-		temp_y = d->player.x + ((cos((-d->player.angle)) * c) * c2);
-		if (d->map.map[(int)temp_x][(int)temp_y] == '1')
+		temp_y = d->player.y + ((sin((-d->player.angle)) * c) * c2);
+		if (d->map.map[(int)temp_y][(int)temp_x] == '1')
 			cc = c - 1;
 		c--;
 	}
@@ -69,13 +69,13 @@ int	manage_key(int keycode, t_global *d)
 	{
 		move_angle(d, LEFT_ARROW);
 		d->player.next_x = d->player.x - (cos(-d->player.angle) * SPEED);
-		d->player.next_Y = d->player.y - (sin(-d->player.angle) * SPEED);
+		d->player.next_y = d->player.y - (sin(-d->player.angle) * SPEED);
 	}
 	if (keycode == RIGHT_ARROW)
 	{
 		move_angle(d, RIGHT_ARROW);
 		d->player.next_x = d->player.x - (cos(-d->player.angle) * SPEED);
-		d->player.next_Y = d->player.y - (sin(-d->player.angle) * SPEED);
+		d->player.next_y = d->player.y - (sin(-d->player.angle) * SPEED);
 	}
 	return (0);
 }

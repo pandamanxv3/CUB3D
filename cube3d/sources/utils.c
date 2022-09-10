@@ -6,11 +6,23 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 01:05:01 by adben-mc          #+#    #+#             */
-/*   Updated: 2022/09/10 02:07:09 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 03:42:11 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+int	vision(float angle)
+{
+	angle = conv_rad(angle);
+	if (angle >= 0 && angle <= (PI / 2))
+		return (NE);
+	else if (angle >= (PI / 2) && angle <= PI)
+		return (NW);
+	else if (angle >= PI && angle <= (PI + (PI / 2)))
+		return (SW);
+	return (SE);
+}
 
 void	ft_destroy_mlx(t_global *data)
 {
@@ -27,17 +39,17 @@ void	ft_destroy_mlx(t_global *data)
 void	move_pos2(t_global *d, int c, int c2)
 {
 	d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
-	d->player.next_Y = d->player.y + ((cos((d->player.angle)) * c) * c2);
-	while (d->map.map[(int)d->player.next_Y][(int)d->player.next_x] == '1')
+	d->player.next_y = d->player.y + ((cos((d->player.angle)) * c) * c2);
+	while (d->map.map[(int)d->player.next_y][(int)d->player.next_x] == '1')
 	{
 		d->player.next_x = d->player.x + ((sin((d->player.angle)) * c) * c2);
-		d->player.next_Y = d->player.y + ((cos((d->player.angle)) * c) * c2);
+		d->player.next_y = d->player.y + ((cos((d->player.angle)) * c) * c2);
 		c--;
 		if (c == 0)
 			return ;
 	}
 	d->player.x = d->player.next_x;
-	d->player.y = d->player.next_Y;
+	d->player.y = d->player.next_y;
 }
 
 int	ft_useless(t_global *data)
@@ -58,24 +70,4 @@ int	my_keyrelease_func(int keycode, t_global *data)
 	if (data->pre_last_input == keycode)
 		data->pre_last_input = 0;
 	return (0);
-}
-
-void	put_cercle(t_global *data, int x, int y, int color)
-{
-	float		i;
-	float		j;
-	int const	rayon = 5;
-
-	i = 0;
-	while (i < (2 * PI))
-	{
-		j = 0;
-		while (j < rayon)
-		{
-			put_pixel_to_frame_buf(data, data->decalage_x + x - (cos(i) * j),
-				data->decalage_y + y - (sin(i) * j), color);
-			j += 0.1f;
-		}
-		i += 0.1f;
-	}
 }

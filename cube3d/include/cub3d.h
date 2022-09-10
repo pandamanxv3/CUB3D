@@ -6,14 +6,12 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 05:01:40 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/10 02:10:43 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 03:44:11 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-
-
 
 # include <mlx.h>
 # include <mlx_int.h> 
@@ -75,8 +73,6 @@ OUTSIDE THE MAP"
 # define FOV 60
 // RAY = FOV / WIDTH : il s'agit de l'ecart entre 2 rayons
 # define RAY 0.055555556
-
-
 
 typedef enum e_hit_side
 {
@@ -146,7 +142,7 @@ typedef struct s_player
 	float	x;
 	float	y;
 	float	next_x;
-	float	next_Y;
+	float	next_y;
 	double	angle;
 }	t_player;
 
@@ -157,12 +153,11 @@ typedef struct s_map
 	char			**map;
 	unsigned int	floor_color;
 	unsigned int	ceiling_color;
-	void	*north_texture;
-	void	*west_texture;
-	void	*east_texture;
-	void	*south_texture;
+	void			*north_texture;
+	void			*west_texture;
+	void			*east_texture;
+	void			*south_texture;
 }	t_map;
-
 
 typedef struct s_mlx
 {
@@ -174,8 +169,6 @@ typedef struct s_mlx
 	int			line_length;
 	int			endian;
 }	t_mlx;
-
-
 
 typedef struct s_global
 {
@@ -196,80 +189,113 @@ typedef struct s_global
 
 /* ******************* PARSING ******************* */
 
-void	parsing(t_global *data, char *path);
+void			parsing(t_global *data, char *path);
 
 /* ------------- 1) get param and map ------------ */
 
-void	get_tab_malloc(t_global *data);
-void	get_file(t_global *data);
-void	checking_file_name(char *path);
-void	ft_init_struct(t_global *data, char *path);
-void	init_var(t_global *g, t_gc *gc);
+void			get_tab_malloc(t_global *data);
+void			get_file(t_global *data);
+void			checking_file_name(char *path);
+void			ft_init_struct(t_global *data, char *path);
+void			init_var(t_global *g, t_gc *gc);
 
 /* ------------- 2) get param and map ------------- */
 
-void	copying_line(t_global *data, char *str, int j);
-void	checking_each_line(t_global *data, char *str, int i, int j);
-int		size_map(t_global *data, int i);
-void	get_map(t_global *data, int i);
-void	get_param_and_map(t_global *data, int i, int j, int k);
+void			copying_line(t_global *data, char *str, int j);
+void			checking_each_line(t_global *data, char *str, int i, int j);
+int				size_map(t_global *data, int i);
+void			get_map(t_global *data, int i);
+void			get_param_and_map(t_global *data, int i, int j, int k);
 
 /* ---------------- 3) parsing map --------------- */
 
-void	first_map_parsing(t_global *data);
-void	checking_map_line(t_global *data, int i, int j, int len_map);
-void	checking_player(t_global *data, int i, int j, int is_present);
-void	init_player_angle(t_global *data, char c);
-void	parsing_map(t_global *data);
+void			first_map_parsing(t_global *data);
+void			checking_map_line(t_global *data, int i, int j, int len_map);
+void			checking_player(t_global *data, int i, int j, int is_present);
+void			init_player_angle(t_global *data, char c);
+void			parsing_map(t_global *data);
 
 /* ------------ 4) are params correct ------------ */
 
-int		is_file_xpm(t_global *data);
-int		is_texture_unique(t_global *data);
-unsigned int	is_color_correct(t_global *data, int to_color, int i, int count);
-void	are_params_correct(t_global *data);
+int				is_file_xpm(t_global *data);
+int				is_texture_unique(t_global *data);
+unsigned int	is_color_correct(t_global *data, int color, int i, int count);
+void			are_params_correct(t_global *data);
 
 /* -------------------- utils -------------------- */
 
-int		val_charset_cmp(char *to_find, char *str, int length, char *w_s);
-int		before_map(t_global *data, int i);
-int		charset(char c, char *str);
+int				val_charset_cmp(char *find, char *str, int length, char *w_s);
+int				before_map(t_global *data, int i);
+int				charset(char c, char *str);
 
 /* -------------------- expand_map_size -------------------- */
 
-void	copy_to_expand(t_global *data, int i, int y, int index);
-void	expand_map_size(t_global	*data);
-int		malloc_new_map(t_global	*data);
-int		fill_new_map(t_global *data, int size);
-void	expand(t_global *data, int sizex, int sizey);
+void			copy_to_expand(t_global *data, int i, int y, int index);
+void			expand_map_size(t_global	*data);
+int				malloc_new_map(t_global	*data);
+int				fill_new_map(t_global *data, int size);
+void			expand(t_global *data, int sizex, int sizey);
 
 /* ******************* EXECUTION ******************* */
 
-void	execution(t_global *data);
+void			execution(t_global *data);
 
-unsigned int	ft_get_pixel(int x, int y, void *img);
-void			put_pixel_to_frame_buf(t_global *data, int x, int y, int color);
-int				ft_screen(t_global *data);
-float 			modulo(float value, float mod_value);
+/* -------------------- cub3D -------------------- */
 
-float 			conv_rad(float angle);
+void			ft_raycasting(t_global *d);
 
-void	move_pos2(t_global *d, int c, int c2);
+/* -------------------- raycasting -------------------- */
+
+int				vision(float angle);
+void			ft_destroy_mlx(t_global *data);
+void			move_pos2(t_global *d, int c, int c2);
 int				ft_useless(t_global *data);
-void			ft_hooks(t_global *data);
-void			ft_moves(t_global *data);
+int				my_keyrelease_func(int keycode, t_global *data);
+
+/* -------------------- get_pixel -------------------- */
+
+void			put_pixel_to_frame_buf(t_global *data, int x, int y, int color);
+unsigned int	ft_get_pixel(int x, int y, void *img);
+
+/* -------------------- hook -------------------- */
+
+void			move_pos(t_global *d, int c, int c2);
+void			move_angle(t_global *data, enum e_keycode direction);
+int				manage_key(int keycode, t_global *d);
 int				key_hook(int keycode, t_global *data);
+void			ft_hooks(t_global *data);
 
-void	ft_destroy_mlx(t_global *data);
+/* -------------------- math -------------------- */
 
-
-int	my_keyrelease_func(int keycode, t_global *data);
-
-
-
-
-
-void 			put_cercle(t_global *data, int x, int y, int color);
 unsigned int	rgb_to_int(unsigned int r, unsigned int g, unsigned int b);
+float			modulo(float value, float mod_value);
+float			conv_rad(float angle);
+float			abs_f(float value);
+float			get_distance(float x1, float y1, float x2, float y2);
 
+/* -------------------- load_texture -------------------- */
+
+void			ft_error_xpm(t_global *data, char *msg);
+void			load_texture(t_global *data);
+
+/* -------------------- print -------------------- */
+
+void			put_cercle(t_global *data, int x, int y, int color);
+int				get_color(t_global *data, t_ray *ray, int y, int height);
+void			ft_crosshair(t_global *data);
+int				ft_screen(t_global *data);
+
+/* -------------------- raycasting -------------------- */
+
+int				collision(t_global *data, int coord_x, int coord_y);
+float			next_wall_h(t_global *d, t_ray *ray, int step);
+float			next_wall_v(t_global *d, t_ray *ray, int step);
+void			distance_final(t_ray *ray, float vert, float horiz);
+void			ft_raying(t_global *d, t_ray *r, int diff, int i);
+
+int				vision(float angle);
+void			ft_destroy_mlx(t_global *data);
+void			move_pos2(t_global *d, int c, int c2);
+int				ft_useless(t_global *data);
+int				my_keyrelease_func(int keycode, t_global *data);
 #endif

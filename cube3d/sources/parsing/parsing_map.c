@@ -6,7 +6,7 @@
 /*   By: aboudjel <aboudjel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 00:26:52 by aboudjel          #+#    #+#             */
-/*   Updated: 2022/09/09 08:10:42 by aboudjel         ###   ########.fr       */
+/*   Updated: 2022/09/10 03:43:06 by aboudjel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	init_player_angle(t_global *data, char c)
 	if (c == 'E')
 		data->player.angle = PI;
 	data->player.next_x = data->player.x + cos(-data->player.angle);
-	data->player.next_Y = data->player.y + sin(-data->player.angle);
+	data->player.next_y = data->player.y + sin(-data->player.angle);
 }
 
 void	checking_player(t_global *data, int i, int j, int is_present)
